@@ -35,7 +35,7 @@ function App() {
   }, [generateLinkToken]);
   return (
     <div className="App">
-      <PlaidLink />
+      <PlaidLink token={config.linkToken} />
     </div>
   );
 }
