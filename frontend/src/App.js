@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import PlaidLink from "./components/PlaidLink";
+
+import "./App.scss";
 
 function App() {
   const [config, setConfig] = useState({
@@ -32,7 +35,7 @@ function App() {
   }, [generateLinkToken]);
   return (
     <div className="App">
-      <button>Link</button>
+      <PlaidLink />
     </div>
   );
 }
