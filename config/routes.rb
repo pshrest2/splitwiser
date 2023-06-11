@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       post '/plaid/create_link_token', to: 'plaid#create_link_token'
       post '/plaid/set_access_token', to: 'plaid#set_access_token'
+
+      get '/plaid/transactions', to: 'plaid#transactions'
     end
   end
 end

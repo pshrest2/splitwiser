@@ -12,12 +12,22 @@ module Api::V1
       render_error
     end
 
-    #POST /set_access_token
+    # POST /set_access_token
     def set_access_token
       api = PlaidApi::SetAccessToken.new(plaid_params[:public_token])
       api.call
 
       head :ok
+    rescue => e
+      render_error
+    end
+
+    # GET /transactions
+    def transactions
+      api = PlaidApi::Transactions.new
+      result = api.call
+
+      render json: {latest_transactions: result}, status: :ok
     rescue => e
       render_error
     end
