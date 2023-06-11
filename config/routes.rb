@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-  get '/plaid/link-token', to: 'plaid#link_token'
-
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      post '/plaid/create_link_token', to: 'plaid#create_link_token'
+    end
+  end
 end
