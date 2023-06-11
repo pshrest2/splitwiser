@@ -11,7 +11,7 @@ module PlaidApi
         redirect_uri: nil,
       })
       response = client.link_token_create(request)
-      { link_token: response.link_token }
+      response.link_token
     rescue Plaid::ApiError => e
       format_error(e)
     end
