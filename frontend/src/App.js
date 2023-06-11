@@ -9,6 +9,8 @@ function App() {
     linkTokenError: null,
   });
 
+  const [linkSuccess, setLinkSuccess] = useState(false);
+
   const generateLinkToken = useCallback(async () => {
     // Link tokens or 'payment_initiation' use a different creation flow in your backend.
     const response = await fetch("/api/v1/plaid/create_link_token", {
@@ -35,7 +37,7 @@ function App() {
   }, [generateLinkToken]);
   return (
     <div className="App">
-      <PlaidLink token={config.linkToken} />
+      <PlaidLink token={config.linkToken} setLinkSuccess={setLinkSuccess} />
     </div>
   );
 }

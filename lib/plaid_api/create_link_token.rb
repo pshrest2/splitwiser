@@ -10,10 +10,12 @@ module PlaidApi
         language: "en",
         redirect_uri: nil,
       })
+
       response = client.link_token_create(request)
       response.link_token
     rescue Plaid::ApiError => e
-      format_error(e)
+      log_error(e)
+      raise e
     end
   end
 end
