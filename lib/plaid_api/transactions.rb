@@ -28,7 +28,7 @@ module PlaidApi
         cursor = response.next_cursor
       end
       # Return the 8 most recent transactions
-      added.sort_by(&:date).last(8).map(&:to_hash)
+      added.sort_by(&:date).map(&:to_hash)
     rescue Plaid::ApiError => e
       log_error(e)
       raise e

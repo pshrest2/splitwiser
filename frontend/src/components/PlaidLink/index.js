@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { Button } from "react-bootstrap";
 import { usePlaidLink } from "react-plaid-link";
 
-const PlaidLink = ({ token, setLinkSuccess }) => {
+const PlaidLink = ({ token }) => {
   const onSuccess = useCallback(async (public_token) => {
     // set the access token in the server by passing the public token
     const response = await fetch("/api/v1/plaid/set_access_token", {
@@ -14,7 +14,6 @@ const PlaidLink = ({ token, setLinkSuccess }) => {
       console.log("Something went wrong while setting the access token");
       return;
     }
-    setLinkSuccess(true);
   }, []);
 
   const config = {

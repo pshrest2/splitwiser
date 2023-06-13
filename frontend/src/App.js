@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import PlaidLink from "./components/PlaidLink";
 
 import "./App.scss";
+import { Button } from "react-bootstrap";
 
 function App() {
   const [config, setConfig] = useState({
@@ -9,7 +10,9 @@ function App() {
     linkTokenError: null,
   });
 
-  const [linkSuccess, setLinkSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [transactions, setTransactions] = useState([]);
 
   const generateLinkToken = useCallback(async () => {
     // Link tokens or 'payment_initiation' use a different creation flow in your backend.
@@ -32,12 +35,68 @@ function App() {
     localStorage.setItem("link_token", data.link_token);
   }, []);
 
+  const formatCurrency = (number, code) => {
+    if (number != null && number !== undefined) {
+      return ` ${parseFloat(number.toFixed(2)).toLocaleString("en")} ${code}`;
+    }
+    return "no data";
+  };
+
+  const getLatestTransactions = async () => {
+    setIsLoading(true);
+    const response = await fetch(`/api/v1/plaid/transactions`, {
+      method: "GET",
+    });
+    const data = await response.json();
+    if (data.error != null) {
+      setError(data.error);
+      setIsLoading(false);
+      return;
+    }
+
+    setTransactions(
+      data.latest_transactions?.map((t) => ({
+        name: t.name,
+        amount: formatCurrency(t.amount, t.iso_currency_code),
+        date: t.date,
+      })) || []
+    );
+
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     generateLinkToken();
   }, [generateLinkToken]);
   return (
     <div className="App">
-      <PlaidLink token={config.linkToken} setLinkSuccess={setLinkSuccess} />
+      <div className="d-flex flex-column">
+        <PlaidLink token={config.linkToken} />
+
+        <Button onClick={getLatestTransactions} disabled={isLoading}>
+          GET Transactions
+        </Button>
+        {transactions.length > 0 && (
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((t) => (
+                <tr key={t.name}>
+                  <td>{t.name}</td>
+                  <td>{t.amount}</td>
+                  <td>{t.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
