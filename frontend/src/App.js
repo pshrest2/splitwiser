@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
+
 import PlaidLink from "./components/PlaidLink";
 
 import "./App.scss";
@@ -13,7 +16,6 @@ function App() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [transactions, setTransactions] = useState([]);
 
   const generateLinkToken = useCallback(async () => {
@@ -51,7 +53,7 @@ function App() {
     });
     const data = await response.json();
     if (data.error != null) {
-      setError(data.error);
+      toast.error(data.error);
       setIsLoading(false);
       return;
     }
@@ -63,7 +65,7 @@ function App() {
         date: t.date,
       })) || []
     );
-
+    toast.success("Successfully fetched transactions");
     setIsLoading(false);
   };
 
@@ -104,6 +106,7 @@ function App() {
 
       <LoginButton />
       <LogoutButton />
+      <ToastContainer />
     </div>
   );
 }
