@@ -22,7 +22,7 @@ class Auth0Client
 
   # Helper Functions 
   def self.domain_url
-    "https://#{Rails.application.credentials.dig(:auth0, :auth0_domain)}/"
+    "https://#{Rails.application.credentials.dig(:auth0, :domain)}/"
   end
 
   def self.decode_token(token, jwks_hash)
@@ -30,7 +30,7 @@ class Auth0Client
                  algorithm: 'RS256',
                  iss: domain_url,
                  verify_iss: true,
-                 aud: Rails.application.credentials.dig(:auth0, :auth0_api_audience),
+                 aud: Rails.application.credentials.dig(:auth0, :audience),
                  verify_aud: true,
                  jwks: { keys: jwks_hash[:keys] }
                })
