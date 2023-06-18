@@ -100,7 +100,7 @@ function App() {
         )}
       </div>
 
-      <PlaidLink token={config.linkToken} setLinkSuccess={setLinkSuccess} />
+      <PlaidLink token={config.linkToken} />
 
       <LoginButton />
       <LogoutButton />
