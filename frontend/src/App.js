@@ -3,6 +3,8 @@ import PlaidLink from "./components/PlaidLink";
 
 import "./App.scss";
 import { Button } from "react-bootstrap";
+import LoginButton from "./components/LoginButton";
+import LogoutButton from "./components/LogoutButton";
 
 function App() {
   const [config, setConfig] = useState({
@@ -97,6 +99,11 @@ function App() {
           </table>
         )}
       </div>
+
+      <PlaidLink token={config.linkToken} setLinkSuccess={setLinkSuccess} />
+
+      <LoginButton />
+      <LogoutButton />
     </div>
   );
 }
