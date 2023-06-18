@@ -3,18 +3,18 @@ import { Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 
 import PlaidLink from "./components/PlaidLink";
-
-import "./App.scss";
-import { Button } from "react-bootstrap";
 import LoginButton from "./components/LoginButton";
 import LogoutButton from "./components/LogoutButton";
 
+import "./App.scss";
+import { useAuth0 } from "@auth0/auth0-react";
+
 function App() {
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [config, setConfig] = useState({
     linkToken: null,
     linkTokenError: null,
   });
-
   const [isLoading, setIsLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
 
@@ -69,6 +69,15 @@ function App() {
     setIsLoading(false);
   };
 
+  const securedApiCall = async () => {
+    const token = await getAccessTokenSilently();
+    await fetch("/api/v1/test", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
   useEffect(() => {
     generateLinkToken();
   }, [generateLinkToken]);
@@ -102,10 +111,15 @@ function App() {
         )}
       </div>
 
-      <PlaidLink token={config.linkToken} />
-
-      <LoginButton />
-      <LogoutButton />
+      {!isAuthenticated && <LoginButton />}
+      {isAuthenticated && (
+        <>
+          <LogoutButton />
+          <Button variant="success" onClick={securedApiCall}>
+            Make Api Call
+          </Button>
+        </>
+      )}
       <ToastContainer />
     </div>
   );
