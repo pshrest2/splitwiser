@@ -5,8 +5,8 @@ module PlaidApi
     def initialize
       configuration ||= Plaid::Configuration.new 
       configuration.server_index = Plaid::Configuration::Environment[ENV['PLAID_ENV'] || 'sandbox']
-      configuration.api_key['PLAID-CLIENT-ID'] = ENV['PLAID_CLIENT_ID']
-      configuration.api_key['PLAID-SECRET'] = ENV['PLAID_SECRET']
+      configuration.api_key['PLAID-CLIENT-ID'] = Rails.application.credentials.dig(:plaid, :client_id)
+      configuration.api_key['PLAID-SECRET'] = Rails.application.credentials.dig(:plaid, :secret)
 
       api_client ||= Plaid::ApiClient.new(configuration)
       @client ||= Plaid::PlaidApi.new(api_client)
