@@ -1,19 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Auth0Provider } from "@auth0/auth0-react";
+
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import "react-toastify/dist/ReactToastify.css";
+
 import "./index.css";
-import { Auth0Provider } from "@auth0/auth0-react";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Auth0Provider
-      domain="dev-lcy5gzi6nxq6kihy.us.auth0.com"
-      clientId="6S7Hly641dhh7xZB0P4UWU4zwd7hdtef"
+      domain={process.env.REACT_APP_AUTH0_DOMAIN}
+      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
       authorizationParams={{
         redirect_uri: window.location.origin,
+        audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        scope: "read:transactions",
       }}
     >
       <App />
