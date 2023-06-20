@@ -6,7 +6,7 @@ module PlaidApi
 
       # Set cursor to empty to receive all historical updates
       cursor = ''
-  
+
       # New transaction updates since "cursor"
       added = []
       modified = []
@@ -15,9 +15,9 @@ module PlaidApi
       # Iterate through each page of new transaction updates for item
       while has_more
         request = Plaid::TransactionsSyncRequest.new({
-          access_token: access_token,
-          cursor: cursor
-        })
+                                                       access_token: access_token,
+                                                       cursor: cursor
+                                                     })
         response = client.transactions_sync(request)
         # Add this page of results
         added += response.added

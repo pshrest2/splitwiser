@@ -5,12 +5,11 @@
 require 'jwt'
 require 'net/http'
 
-class Auth0Client 
-
-  # Auth0 Client Objects 
+class Auth0Client
+  # Auth0 Client Objects
   Error = Struct.new(:message, :status)
   Response = Struct.new(:decoded_token, :error)
-  
+
   Token = Struct.new(:token) do
     def validate_permissions(permissions)
       required_permissions = Set.new permissions
@@ -20,7 +19,7 @@ class Auth0Client
     end
   end
 
-  # Helper Functions 
+  # Helper Functions
   def self.domain_url
     "https://#{Rails.application.credentials.dig(:auth0, :domain)}/"
   end
@@ -41,7 +40,7 @@ class Auth0Client
     Net::HTTP.get_response jwks_uri
   end
 
-  # Token Validation 
+  # Token Validation
   def self.validate_token(token)
     jwks_response = get_jwks
 
