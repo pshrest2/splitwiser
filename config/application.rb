@@ -1,6 +1,6 @@
-require_relative "boot"
+require_relative 'boot'
 
-require "rails/all"
+require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -25,7 +25,7 @@ module Splitwiser
     config.api_only = true
 
     config.autoload_paths.push(
-      "#{config.root}/lib",
+      "#{config.root}/lib"
     )
   end
 end

@@ -1,8 +1,8 @@
 module PlaidApi
   class Transactions < PlaidApiBase
     def call
-      access_token = Rails.cache.read("plaid_access_token")
-      raise StandardError.new("Permission denied") if access_token.blank?
+      access_token = Rails.cache.read('plaid_access_token')
+      raise StandardError, 'Permission denied' if access_token.blank?
 
       # Set cursor to empty to receive all historical updates
       cursor = ''
@@ -15,8 +15,8 @@ module PlaidApi
       # Iterate through each page of new transaction updates for item
       while has_more
         request = Plaid::TransactionsSyncRequest.new({
-                                                       access_token: access_token,
-                                                       cursor: cursor
+                                                       access_token:,
+                                                       cursor:
                                                      })
         response = client.transactions_sync(request)
         # Add this page of results
