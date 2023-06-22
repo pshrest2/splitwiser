@@ -8,9 +8,7 @@ module Api
       def index
         # TODO: also check if the access token is expired
         account_linked = Rails.cache.exist?('plaid_access_token')
-        {
-          account_linked:
-        }
+        render json: { account_linked: }, status: :ok
       end
 
       # POST /create_link_token

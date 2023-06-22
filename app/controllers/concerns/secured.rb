@@ -29,7 +29,7 @@ module Secured
 
     return unless (error = validation_response.error)
 
-    render json: { message: error.message }, status: error.status
+    render json: { error: error.message }, status: error.status
   end
 
   def validate_permissions(permissions)

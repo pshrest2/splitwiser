@@ -9,11 +9,9 @@ import BackgroundContainer from "../../components/BackgroundContainer";
 const AccountPage = () => {
   // TODO: store access token in react state in react context or redux
   const { getAccessTokenSilently } = useAuth0();
-  const [config, setConfig] = useState({
-    linkToken: null,
-    linkTokenError: null,
-  });
+  const [linkToken, setLinkToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [accountLinked, setAccountLinked] = useState(false);
   const [transactions, setTransactions] = useState([]);
 
   const generateLinkToken = useCallback(async () => {
@@ -29,17 +27,35 @@ const AccountPage = () => {
     const data = await response.json();
     if (data) {
       if (data.error) {
-        setConfig({
-          linkToken: null,
-          linkTokenError: data.error,
-        });
-        return;
+        setLinkToken(null);
+        toast.error(data.error);
+      } else {
+        setLinkToken(data.link_token);
       }
-      setConfig({ linkToken: data.link_token, linkTokenError: null });
     }
     // Save the link_token to be used later in the Oauth flow.
     localStorage.setItem("link_token", data.link_token);
   }, [getAccessTokenSilently]);
+
+  const verifyAccountLinked = useCallback(async () => {
+    const token = await getAccessTokenSilently();
+    const response = await fetch("/api/v1/plaid", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) return;
+    const data = await response.json();
+
+    if (data) {
+      if (data.error) toast.error("Something went wrong");
+      if (data.account_linked) setAccountLinked(true);
+      else {
+        setAccountLinked(false);
+        await generateLinkToken();
+      }
+    }
+  }, [generateLinkToken, getAccessTokenSilently]);
 
   const formatCurrency = (number, code) => {
     if (number != null && number !== undefined) {
@@ -78,17 +94,22 @@ const AccountPage = () => {
   };
 
   useEffect(() => {
-    generateLinkToken();
-  }, [generateLinkToken]);
+    verifyAccountLinked();
+  }, [verifyAccountLinked]);
 
   return (
     <BackgroundContainer className="home-page">
       <div className="mt-5 d-flex flex-column">
         <>
-          <PlaidLink token={config.linkToken} />
-          <Button onClick={getLatestTransactions} disabled={isLoading}>
-            GET Transactions
-          </Button>
+          {!accountLinked && linkToken && (
+            <PlaidLink token={linkToken} setAccountLinked={setAccountLinked} />
+          )}
+
+          {accountLinked && (
+            <Button onClick={getLatestTransactions} disabled={isLoading}>
+              GET Transactions
+            </Button>
+          )}
 
           {transactions.length > 0 && (
             <table>

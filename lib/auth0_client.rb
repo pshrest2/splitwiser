@@ -1,7 +1,5 @@
 # app/lib/auth0_client.rb
 
-# frozen_string_literal: true
-
 require 'jwt'
 require 'net/http'
 
