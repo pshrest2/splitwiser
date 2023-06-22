@@ -2,7 +2,16 @@ module Api
   module V1
     # app/controllers/api/v1/plaid
     class PlaidController < ApplicationController
+      before_action :authorize
       attr_reader :access_token
+
+      def index
+        # TODO: also check if the access token is expired
+        account_linked = Rails.cache.exist?('plaid_access_token')
+        {
+          account_linked:
+        }
+      end
 
       # POST /create_link_token
       def create_link_token

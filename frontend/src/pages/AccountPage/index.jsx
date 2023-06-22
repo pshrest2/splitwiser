@@ -1,16 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
-
-import PlaidLink from "./components/PlaidLink";
-import LoginButton from "./components/LoginButton";
-import LogoutButton from "./components/LogoutButton";
-
-import "./App.scss";
+import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
 
-function App() {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+import PlaidLink from "../../components/PlaidLink";
+import BackgroundContainer from "../../components/BackgroundContainer";
+
+const AccountPage = () => {
+  // TODO: store access token in react state in react context or redux
+  const { getAccessTokenSilently } = useAuth0();
   const [config, setConfig] = useState({
     linkToken: null,
     linkTokenError: null,
@@ -20,8 +18,12 @@ function App() {
 
   const generateLinkToken = useCallback(async () => {
     // Link tokens or 'payment_initiation' use a different creation flow in your backend.
+    const token = await getAccessTokenSilently();
     const response = await fetch("/api/v1/plaid/create_link_token", {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (!response.ok) return;
     const data = await response.json();
@@ -37,7 +39,7 @@ function App() {
     }
     // Save the link_token to be used later in the Oauth flow.
     localStorage.setItem("link_token", data.link_token);
-  }, []);
+  }, [getAccessTokenSilently]);
 
   const formatCurrency = (number, code) => {
     if (number != null && number !== undefined) {
@@ -48,10 +50,16 @@ function App() {
 
   const getLatestTransactions = async () => {
     setIsLoading(true);
+
+    const token = await getAccessTokenSilently();
     const response = await fetch(`/api/v1/plaid/transactions`, {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     const data = await response.json();
+
     if (data.error != null) {
       toast.error(data.error);
       setIsLoading(false);
@@ -69,60 +77,43 @@ function App() {
     setIsLoading(false);
   };
 
-  const securedApiCall = async () => {
-    const token = await getAccessTokenSilently();
-    await fetch("/api/v1/test", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-  };
-
   useEffect(() => {
     generateLinkToken();
   }, [generateLinkToken]);
+
   return (
-    <div className="App">
-      <div className="d-flex flex-column">
-        <PlaidLink token={config.linkToken} />
-
-        <Button onClick={getLatestTransactions} disabled={isLoading}>
-          GET Transactions
-        </Button>
-        {transactions.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((t) => (
-                <tr key={t.name}>
-                  <td>{t.name}</td>
-                  <td>{t.amount}</td>
-                  <td>{t.date}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
-
-      {!isAuthenticated && <LoginButton />}
-      {isAuthenticated && (
+    <BackgroundContainer className="home-page">
+      <div className="mt-5 d-flex flex-column">
         <>
-          <LogoutButton />
-          <Button variant="success" onClick={securedApiCall}>
-            Make Api Call
+          <PlaidLink token={config.linkToken} />
+          <Button onClick={getLatestTransactions} disabled={isLoading}>
+            GET Transactions
           </Button>
-        </>
-      )}
-      <ToastContainer />
-    </div>
-  );
-}
 
-export default App;
+          {transactions.length > 0 && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map((t) => (
+                  <tr key={t.name}>
+                    <td>{t.name}</td>
+                    <td>{t.amount}</td>
+                    <td>{t.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </>
+      </div>
+    </BackgroundContainer>
+  );
+};
+
+export default AccountPage;

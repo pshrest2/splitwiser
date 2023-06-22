@@ -25,7 +25,7 @@ const PlaidLink = ({ token }) => {
 
   return (
     <Button onClick={open} disabled={!ready}>
-      Launch Link
+      Link account
     </Button>
   );
 };

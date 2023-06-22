@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       post '/plaid/create_link_token', to: 'plaid#create_link_token'
       post '/plaid/set_access_token', to: 'plaid#set_access_token'
 
+      get '/plaid', to: 'plaid#index'
       get '/plaid/transactions', to: 'plaid#transactions'
 
       get '/test', to: 'test#index'
