@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import PlaidLink from "../../components/PlaidLink";
 import BackgroundContainer from "../../components/BackgroundContainer";
 
 const AccountPage = () => {
-  // TODO: store access token in react state in react context or redux
-  const { getAccessTokenSilently } = useAuth0();
   const [linkToken, setLinkToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [accountLinked, setAccountLinked] = useState(false);
@@ -16,7 +13,7 @@ const AccountPage = () => {
 
   const generateLinkToken = useCallback(async () => {
     // Link tokens or 'payment_initiation' use a different creation flow in your backend.
-    const token = await getAccessTokenSilently();
+    const token = localStorage.getItem("accessToken");
     const response = await fetch("/api/v1/plaid/create_link_token", {
       method: "POST",
       headers: {
@@ -35,10 +32,10 @@ const AccountPage = () => {
     }
     // Save the link_token to be used later in the Oauth flow.
     localStorage.setItem("link_token", data.link_token);
-  }, [getAccessTokenSilently]);
+  }, []);
 
   const verifyAccountLinked = useCallback(async () => {
-    const token = await getAccessTokenSilently();
+    const token = localStorage.getItem("accessToken");
     const response = await fetch("/api/v1/plaid", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -55,7 +52,7 @@ const AccountPage = () => {
         await generateLinkToken();
       }
     }
-  }, [generateLinkToken, getAccessTokenSilently]);
+  }, [generateLinkToken]);
 
   const formatCurrency = (number, code) => {
     if (number != null && number !== undefined) {
@@ -67,7 +64,7 @@ const AccountPage = () => {
   const getLatestTransactions = async () => {
     setIsLoading(true);
 
-    const token = await getAccessTokenSilently();
+    const token = localStorage.getItem("accessToken");
     const response = await fetch(`/api/v1/plaid/transactions`, {
       method: "GET",
       headers: {
