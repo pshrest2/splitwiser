@@ -33,14 +33,14 @@ class Auth0Client
                })
   end
 
-  def self.get_jwks
+  def self.fetch_jwks
     jwks_uri = URI("#{domain_url}.well-known/jwks.json")
     Net::HTTP.get_response jwks_uri
   end
 
   # Token Validation
   def self.validate_token(token)
-    jwks_response = get_jwks
+    jwks_response = fetch_jwks
 
     unless jwks_response.is_a? Net::HTTPSuccess
       error = Error.new(message: 'Unable to verify credentials', status: :internal_server_error)
@@ -52,7 +52,7 @@ class Auth0Client
     decoded_token = decode_token(token, jwks_hash)
 
     Response.new(Token.new(decoded_token), nil)
-  rescue JWT::VerificationError, JWT::DecodeError => e
+  rescue JWT::VerificationError, JWT::DecodeError => _e
     error = Error.new('Bad credentials', :unauthorized)
     Response.new(nil, error)
   end
