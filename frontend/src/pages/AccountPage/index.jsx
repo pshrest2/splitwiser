@@ -4,20 +4,20 @@ import { toast } from "react-toastify";
 
 import PlaidLink from "../../components/PlaidLink";
 import BackgroundContainer from "../../components/BackgroundContainer";
+import useAccessToken from "../../hooks/useAccessToken";
 
 const AccountPage = () => {
   const [linkToken, setLinkToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [accountLinked, setAccountLinked] = useState(false);
   const [transactions, setTransactions] = useState([]);
-
+  const { accessToken } = useAccessToken();
   const generateLinkToken = useCallback(async () => {
     // Link tokens or 'payment_initiation' use a different creation flow in your backend.
-    const token = localStorage.getItem("accessToken");
     const response = await fetch("/api/v1/plaid/create_link_token", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     if (!response.ok) return;
@@ -32,13 +32,12 @@ const AccountPage = () => {
     }
     // Save the link_token to be used later in the Oauth flow.
     localStorage.setItem("link_token", data.link_token);
-  }, []);
+  }, [accessToken]);
 
   const verifyAccountLinked = useCallback(async () => {
-    const token = localStorage.getItem("accessToken");
     const response = await fetch("/api/v1/plaid", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     if (!response.ok) return;
@@ -52,7 +51,7 @@ const AccountPage = () => {
         await generateLinkToken();
       }
     }
-  }, [generateLinkToken]);
+  }, [accessToken, generateLinkToken]);
 
   const formatCurrency = (number, code) => {
     if (number != null && number !== undefined) {
@@ -64,11 +63,10 @@ const AccountPage = () => {
   const getLatestTransactions = async () => {
     setIsLoading(true);
 
-    const token = localStorage.getItem("accessToken");
     const response = await fetch(`/api/v1/plaid/transactions`, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     const data = await response.json();
