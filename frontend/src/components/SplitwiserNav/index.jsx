@@ -5,6 +5,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 const SplitwiserNav = () => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
+  const handleLogout = () => {
+    logout({ returnTo: window.location.origin });
+    localStorage.removeItem("splitwiser");
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -14,11 +19,7 @@ const SplitwiserNav = () => {
           <Nav>
             {isAuthenticated ? (
               <>
-                <Nav.Link
-                  onClick={() => logout({ returnTo: window.location.origin })}
-                >
-                  Logout
-                </Nav.Link>
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </>
             ) : (
               <Nav.Link onClick={loginWithRedirect}>Login</Nav.Link>
