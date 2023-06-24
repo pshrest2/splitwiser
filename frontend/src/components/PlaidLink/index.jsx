@@ -1,21 +1,20 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback } from "react";
 import { Button } from "react-bootstrap";
 import { usePlaidLink } from "react-plaid-link";
 import { toast } from "react-toastify";
+import useAccessToken from "../../hooks/useAccessToken";
 
 const PlaidLink = ({ token, setAccountLinked }) => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { accessToken } = useAccessToken();
 
   const onSuccess = useCallback(
     async (public_token) => {
       // set the access token in the server by passing the public token
-      const token = await getAccessTokenSilently();
       const response = await fetch("/api/v1/plaid/set_access_token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ public_token }),
       });
@@ -25,7 +24,7 @@ const PlaidLink = ({ token, setAccountLinked }) => {
       }
       setAccountLinked(true);
     },
-    [getAccessTokenSilently, setAccountLinked]
+    [accessToken, setAccountLinked]
   );
 
   const config = {
