@@ -89,8 +89,8 @@ const AccountPage = () => {
   };
 
   useEffect(() => {
-    verifyAccountLinked();
-  }, [verifyAccountLinked]);
+    if (accessToken) verifyAccountLinked();
+  }, [accessToken, verifyAccountLinked]);
 
   return (
     <BackgroundContainer className="home-page">
