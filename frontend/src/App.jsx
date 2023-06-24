@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import "./App.scss";
 import RequireAuth from "./components/RequireAuth";
 import AccountPage from "./pages/AccountPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const { isLoading } = useAuth0();
@@ -23,6 +24,14 @@ function App() {
             element={
               <RequireAuth>
                 <AccountPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <ProfilePage />
               </RequireAuth>
             }
           />

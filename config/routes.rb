@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get '/plaid', to: 'plaid#index'
       get '/plaid/transactions', to: 'plaid#transactions'
 
+      get '/users/:auth0_id', to: 'users#show'
       post '/users', to: 'users#create'
     end
   end
