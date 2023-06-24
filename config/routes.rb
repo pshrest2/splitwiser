@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       get '/plaid', to: 'plaid#index'
       get '/plaid/transactions', to: 'plaid#transactions'
 
-      get '/test', to: 'test#index'
+      post '/users', to: 'users#create'
     end
   end
 end
