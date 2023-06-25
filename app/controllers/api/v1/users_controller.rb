@@ -6,7 +6,7 @@ module Api
 
       # GET /users/:id
       def show
-        user = User.find_by(auth0_id: params[:id])
+        user = User.find_by(auth0_id: params[:auth0_id])
         render json: user
       end
 

@@ -9,7 +9,7 @@ import "./index.scss";
 const BackgroundContainer = ({ children, className }) => (
   <div className={`background-container ${className}`}>
     <SplitwiserNav />
-    <Container>{children}</Container>
+    <Container className="my-5">{children}</Container>
   </div>
 );
 
