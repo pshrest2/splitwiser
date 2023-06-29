@@ -4,7 +4,7 @@ module Api
     class UsersController < ApplicationController
       before_action :authorize
 
-      # GET /users/:id
+      # GET /users/:auth0_id
       def show
         user = User.find_by(auth0_id: params[:auth0_id])
         render json: user
@@ -24,7 +24,7 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:auth0_id, :name, :email, :phone)
+        params.require(:user).permit(:auth0_id, :name, :email)
       end
     end
   end

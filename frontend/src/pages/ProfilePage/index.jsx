@@ -17,16 +17,14 @@ const ProfilePage = () => {
           auth0_id: user.sub,
           name: user.name,
           email: user.email,
-          phone: user.phone_number,
         },
         accessToken
       );
-  }, [accessToken, user.email, user.name, user.phone_number, user.sub]);
+  }, [accessToken, user.email, user.name, user.sub]);
 
   useEffect(() => {
     if (accessToken) createNewUser();
   }, [accessToken, createNewUser]);
-
   return (
     <BackgroundContainer>
       <div className="d-flex">
@@ -36,7 +34,7 @@ const ProfilePage = () => {
         <div className="d-flex flex-column">
           <h3>{user.name}</h3>
           {user.email}
-          {user.phone_number}
+          {user.preferred_username}
         </div>
       </div>
     </BackgroundContainer>

@@ -19,7 +19,7 @@ const API = {
     return await fetch(route, options);
   },
 
-  fetchJSON: (route, accessToken, body = {}, opts = {}) =>
+  fetchJSON: (route, accessToken, body, opts = {}) =>
     API.securedFetch(route, accessToken, body, opts).then((response) => {
       if (response.ok) {
         if (response.headers.get("content-type").match(/application\/json/i)) {
