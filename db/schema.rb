@@ -18,6 +18,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_24_175945) do
     t.string "auth0_id", null: false
     t.string "name", null: false
     t.string "email", null: false
+    t.string "picture"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["auth0_id"], name: "index_users_on_auth0_id", unique: true
