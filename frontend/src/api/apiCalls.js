@@ -11,3 +11,7 @@ export function createUser(body, token) {
 export function updateUser(id, body, token) {
   return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PUT" });
 }
+
+export function authCallback(body, token) {
+  return API.fetchJSON("/api/v1/auth", token, body);
+}

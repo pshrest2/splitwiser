@@ -4,11 +4,10 @@ import { Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const RequireAuth = ({ children }) => {
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   if (!isAuthenticated) return <Navigate to="/" replace />;
-  if (isAuthenticated && !user.email_verified)
-    return <Navigate to="/verify-email" replace />;
+
   return children;
 };
 

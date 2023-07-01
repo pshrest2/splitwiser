@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import useAccessToken from "../../hooks/useAccessToken";
 
 const PlaidLink = ({ token, setAccountLinked }) => {
-  const { accessToken } = useAccessToken();
+  const accessToken = useAccessToken();
 
   const onSuccess = useCallback(
     async (public_token) => {

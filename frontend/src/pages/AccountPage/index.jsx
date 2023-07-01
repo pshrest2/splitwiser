@@ -11,7 +11,7 @@ const AccountPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [accountLinked, setAccountLinked] = useState(false);
   const [transactions, setTransactions] = useState([]);
-  const { accessToken } = useAccessToken();
+  const accessToken  = useAccessToken();
   const generateLinkToken = useCallback(async () => {
     // Link tokens or 'payment_initiation' use a different creation flow in your backend.
     const response = await fetch("/api/v1/plaid/create_link_token", {
