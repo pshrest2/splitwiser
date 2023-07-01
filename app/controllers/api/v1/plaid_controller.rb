@@ -46,10 +46,6 @@ module Api
       def plaid_params
         params.require(:plaid).permit(:public_token)
       end
-
-      def render_error
-        render json: { error: 'Something went wrong' }, status: :unprocessable_entity
-      end
     end
   end
 end

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
       get '/users/:auth0_id', to: 'users#show'
       post '/users', to: 'users#create'
+      put '/users/:auth0_id', to: 'users#update'
     end
   end
 end
