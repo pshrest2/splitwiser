@@ -6,7 +6,7 @@ import RequireAuth from "./components/RequireAuth";
 import HomePage from "./pages/HomePage";
 import AccountPage from "./pages/AccountPage";
 import ProfilePage from "./pages/ProfilePage";
-import VerifyEmail from "./pages/VerifyEmail";
+import AuthCallback from "./pages/AuthCallback";
 
 import "./App.scss";
 function App() {
@@ -19,7 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" exact element={<HomePage />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/callback" element={<AuthCallback />} />
           <Route
             path="/account"
             element={

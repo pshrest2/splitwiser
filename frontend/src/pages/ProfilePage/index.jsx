@@ -1,10 +1,11 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Form, Image } from "react-bootstrap";
-import BackgroundContainer from "../../components/BackgroundContainer";
-import { createUser, getUser, updateUser } from "../../api/apiCalls";
-import useAccessToken from "../../hooks/useAccessToken";
 import { toast } from "react-toastify";
+import { useAuth0 } from "@auth0/auth0-react";
+
+import BackgroundContainer from "../../components/BackgroundContainer";
+import { getUser, updateUser } from "../../api/apiCalls";
+import useAccessToken from "../../hooks/useAccessToken";
 
 const ProfilePage = () => {
   const { user: auth0_user } = useAuth0();
@@ -26,27 +27,10 @@ const ProfilePage = () => {
     [accessToken, user]
   );
 
-  // move this method to a seperate component that will only run once for a newly created user
   const loadUser = useCallback(async () => {
     const currUser = await getUser(auth0_user.sub, accessToken);
-    if (!currUser)
-      await createUser(
-        {
-          auth0_id: auth0_user.sub,
-          name: auth0_user.name,
-          email: auth0_user.email,
-          picture: auth0_user.picture,
-        },
-        accessToken
-      );
-    else setUser(currUser);
-  }, [
-    accessToken,
-    auth0_user.email,
-    auth0_user.name,
-    auth0_user.picture,
-    auth0_user.sub,
-  ]);
+    setUser(currUser);
+  }, [accessToken, auth0_user.sub]);
 
   const handleFieldChange = (e) => {
     setUser((prevState) => ({

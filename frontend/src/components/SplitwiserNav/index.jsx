@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
 
 const SplitwiserNav = () => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
@@ -19,6 +20,12 @@ const SplitwiserNav = () => {
           <Nav>
             {isAuthenticated ? (
               <>
+                <Nav.Link as={Link} to="/">
+                  Home
+                </Nav.Link>
+                <Nav.Link as={Link} to="/profile">
+                  Profile
+                </Nav.Link>
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </>
             ) : (
