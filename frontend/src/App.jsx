@@ -2,13 +2,13 @@ import { ToastContainer } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
-import HomePage from "./pages/HomePage";
-
-import "./App.scss";
 import RequireAuth from "./components/RequireAuth";
+import HomePage from "./pages/HomePage";
 import AccountPage from "./pages/AccountPage";
 import ProfilePage from "./pages/ProfilePage";
+import VerifyEmail from "./pages/VerifyEmail";
 
+import "./App.scss";
 function App() {
   const { isLoading } = useAuth0();
 
@@ -19,6 +19,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" exact element={<HomePage />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route
             path="/account"
             element={

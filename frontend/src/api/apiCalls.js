@@ -7,3 +7,7 @@ export function getUser(id, token) {
 export function createUser(body, token) {
   return API.fetchJSON("/api/v1/users", token, body);
 }
+
+export function updateUser(id, body, token) {
+  return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PUT" });
+}
