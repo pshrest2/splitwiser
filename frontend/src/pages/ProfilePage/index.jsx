@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Button, Form, Image } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import BackgroundContainer from "../../components/BackgroundContainer";
-import { getUser, updateUser } from "../../api/apiCalls";
+import { updateUser } from "../../api/apiCalls";
 import useAccessToken from "../../hooks/useAccessToken";
 
 const ProfilePage = () => {
-  const { user: auth0_user, getAccessTokenSilently } = useAuth0();
+  const { user: auth0_user } = useAuth0();
   const accessToken = useAccessToken();
   const [editUser, setEditUser] = useState(false);
   const [user, setUser] = useState(auth0_user);
@@ -24,13 +24,8 @@ const ProfilePage = () => {
         setEditUser(false);
       }
     },
-    [accessToken, getAccessTokenSilently, user]
+    [accessToken, user]
   );
-
-  const loadUser = useCallback(async () => {
-    const currUser = await getUser(auth0_user.sub, accessToken);
-    setUser(currUser);
-  }, [accessToken, auth0_user.sub]);
 
   const handleFieldChange = (e) => {
     setUser((prevState) => ({
@@ -38,12 +33,6 @@ const ProfilePage = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
-  console.log(auth0_user);
-
-  // useEffect(() => {
-  //   if (accessToken) loadUser();
-  // }, [accessToken, loadUser]);
 
   return (
     <BackgroundContainer>

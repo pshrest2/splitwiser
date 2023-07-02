@@ -6,17 +6,12 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      post '/plaid/create_link_token', to: 'plaid#create_link_token'
-      post '/plaid/set_access_token', to: 'plaid#set_access_token'
+      get   '/plaid', to: 'plaid#index'
+      get   '/plaid/transactions', to: 'plaid#transactions'
+      post  '/plaid/create_link_token', to: 'plaid#create_link_token'
+      post  '/plaid/set_access_token', to: 'plaid#set_access_token'
 
-      get '/plaid', to: 'plaid#index'
-      get '/plaid/transactions', to: 'plaid#transactions'
-
-      get '/users/:auth0_id', to: 'users#show'
-      post '/users', to: 'users#create'
-      patch '/users/:auth0_id', to: 'users#update'
-
-      post '/auth', to: 'auth#callback'
+      resources :users
     end
   end
 end

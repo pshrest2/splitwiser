@@ -1,15 +1,15 @@
 import React from "react";
+import { Provider as ReduxProvider } from "react-redux";
 import ReactDOM from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { configureStore } from "@reduxjs/toolkit";
-import { Provider as ReduxProvider } from "react-redux";
 
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import allReducers from "./reducers";
 
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
-import allReducers from "./reducers";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = configureStore({
@@ -22,7 +22,7 @@ root.render(
       domain={process.env.REACT_APP_AUTH0_DOMAIN}
       clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: `${window.location.origin}/callback`,
+        redirect_uri: `${window.location.origin}/profile`,
         audience: process.env.REACT_APP_AUTH0_AUDIENCE,
       }}
     >

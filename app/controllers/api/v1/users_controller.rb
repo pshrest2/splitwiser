@@ -2,31 +2,22 @@ module Api
   module V1
     # app/controllers/api/v1/test_controller.rb
     class UsersController < ApplicationController
-      before_action :authorize
+      # before_action :authorize
 
-      # GET /users/:auth0_id
+      def initialize
+        super
+        @api ||= Auth0Api::User.new
+      end
+
+      # GET /users/:id
       def show
-        @user = User.find_by(auth0_id: params[:auth0_id])
-        render json: @user
+        user = @api.fetch(params[:id])
+        render json: user, status: :ok
       end
 
-      # POST /users
-      def create
-        @user = User.new(user_params)
-
-        if @user.save
-          render_success('User created successfully', :created)
-        else
-          render_error('Unable to create user')
-        end
-      rescue StandardError => _e
-        render_error
-      end
-
-      # PATCH /users/:auth0_id
+      # PATCH /users/:id
       def update
-        api = Auth0Api::User.new
-        api.update(params[:auth0_id], { name: params[:name] })
+        @api.update(params[:id], user_params)
 
         render_success('User updated successfully')
       rescue StandardError => _e
@@ -36,7 +27,7 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:auth0_id, :name, :email, :picture)
+        params.require(:user).permit(:name, :picture)
       end
     end
   end
