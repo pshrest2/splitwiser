@@ -3,7 +3,7 @@ module Api
     class AccountsController < ApplicationController
       # GET /users/:user_id/accounts
       def index
-        @accounts = Account.where(user_id: params[:user_id])
+        @accounts = Account.where(user_id: params[:user_id]).select(:id, :name, :access_token_expired, :created_at, :updated_at)
         render json: @accounts, status: :ok
       end
 
