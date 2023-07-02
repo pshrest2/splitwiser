@@ -7,3 +7,20 @@ export function getUser(id, token) {
 export function updateUser(id, body, token) {
   return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PATCH" });
 }
+
+export function getUserAccounts(user_id, token) {
+  return API.fetchJSON(`/api/v1/users/${user_id}/accounts`, token);
+}
+
+export function createUserAccount(user_id, body, token) {
+  return API.fetchJSON(`/api/v1/users/${user_id}/accounts`, token, body);
+}
+
+export function deleteUserAccount(user_id, account_id, token) {
+  return API.fetchJSON(
+    `/api/v1/users/${user_id}/accounts/${account_id}`,
+    token,
+    null,
+    { method: "DELETE" }
+  );
+}
