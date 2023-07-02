@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" exact element={<HomePage />} />
           <Route
-            path="/plaid"
+            path="/account"
             element={
               <RequireAuth>
                 <AccountPage />
