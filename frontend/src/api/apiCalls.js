@@ -9,7 +9,7 @@ export function createUser(body, token) {
 }
 
 export function updateUser(id, body, token) {
-  return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PUT" });
+  return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PATCH" });
 }
 
 export function authCallback(body, token) {

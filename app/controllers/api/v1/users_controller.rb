@@ -23,14 +23,12 @@ module Api
         render_error
       end
 
-      # PUT /users/:auth0_id
+      # PATCH /users/:auth0_id
       def update
-        @user = User.find_by(auth0_id: params[:auth0_id])
-        if @user&.update(user_params)
-          render_success('User updated successfully')
-        else
-          render_error('Cannot find user', 400)
-        end
+        api = Auth0Api::User.new
+        api.update(params[:auth0_id], { name: params[:name] })
+
+        render_success('User updated successfully')
       rescue StandardError => _e
         render_error
       end

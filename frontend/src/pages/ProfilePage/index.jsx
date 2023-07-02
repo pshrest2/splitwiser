@@ -8,15 +8,15 @@ import { getUser, updateUser } from "../../api/apiCalls";
 import useAccessToken from "../../hooks/useAccessToken";
 
 const ProfilePage = () => {
-  const { user: auth0_user } = useAuth0();
+  const { user: auth0_user, getAccessTokenSilently } = useAuth0();
   const accessToken = useAccessToken();
   const [editUser, setEditUser] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(auth0_user);
 
   const handleFormSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-      const result = await updateUser(user.auth0_id, user, accessToken);
+      const result = await updateUser(user.sub, user, accessToken);
       if (result.error)
         toast.error("There was an error updating user. Please try again later");
       else {
@@ -24,7 +24,7 @@ const ProfilePage = () => {
         setEditUser(false);
       }
     },
-    [accessToken, user]
+    [accessToken, getAccessTokenSilently, user]
   );
 
   const loadUser = useCallback(async () => {
@@ -39,9 +39,11 @@ const ProfilePage = () => {
     }));
   };
 
-  useEffect(() => {
-    if (accessToken) loadUser();
-  }, [accessToken, loadUser]);
+  console.log(auth0_user);
+
+  // useEffect(() => {
+  //   if (accessToken) loadUser();
+  // }, [accessToken, loadUser]);
 
   return (
     <BackgroundContainer>
