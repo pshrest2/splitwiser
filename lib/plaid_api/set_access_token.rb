@@ -5,11 +5,11 @@ module PlaidApi
       super()
     end
 
-    def call
+    def call!(account)
       exchange_request = Plaid::ItemPublicTokenExchangeRequest.new({ public_token: @public_token })
       access_token = client.item_public_token_exchange(exchange_request).access_token
 
-      Rails.cache.write('plaid_access_token', access_token)
+      account.update(access_token:, access_token_expired: false)
     rescue Plaid::ApiError => e
       log_error(e)
       raise e
