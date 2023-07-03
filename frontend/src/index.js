@@ -11,6 +11,8 @@ import allReducers from "./reducers";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-alpine.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = configureStore({
