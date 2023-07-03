@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import {
   createUserAccount,
+  deleteUserAccount,
   getTransactions,
   getUserAccounts,
 } from "../../api/apiCalls";
@@ -38,6 +39,19 @@ const Accounts = () => {
     }
   }, [getAccessTokenSilently, user.sub]);
 
+  const deleteAccount = useCallback(
+    async (id) => {
+      try {
+        const accessToken = await getAccessTokenSilently();
+        await deleteUserAccount(user.sub, id, accessToken);
+        await fetchAccounts();
+      } catch (errorResponse) {
+        toast.error(errorResponse.error.message);
+      }
+    },
+    [fetchAccounts, getAccessTokenSilently, user.sub]
+  );
+
   const fetchTransactions = useCallback(
     async (account) => {
       try {
@@ -72,8 +86,9 @@ const Accounts = () => {
       if (result.error)
         toast.error("Failed to add account. Please try again later");
       else toast.success("Account added successfully");
+      await fetchAccounts();
     },
-    [getAccessTokenSilently, user.sub]
+    [fetchAccounts, getAccessTokenSilently, user.sub]
   );
 
   useEffect(() => {
@@ -107,6 +122,13 @@ const Accounts = () => {
                   onClick={() => fetchTransactions(account)}
                 >
                   Get Transactions
+                </Button>
+                <Button
+                  className="mx-2"
+                  variant="danger"
+                  onClick={() => deleteAccount(account.id)}
+                >
+                  Delete Account
                 </Button>
               </td>
             </tr>
