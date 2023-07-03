@@ -1,11 +1,11 @@
 module PlaidApi
   class Transactions < PlaidApiBase
-    def call
-      access_token = Rails.cache.read('plaid_access_token')
-      raise StandardError, 'Permission denied' if access_token.blank?
+    def call(account_id)
+      access_token = Account.find(account_id).access_token
+      raise StandardError, "Permission denied" if access_token.blank?
 
       # Set cursor to empty to receive all historical updates
-      cursor = ''
+      cursor = ""
 
       # New transaction updates since "cursor"
       added = []
@@ -27,8 +27,8 @@ module PlaidApi
         # Update cursor to the next cursor
         cursor = response.next_cursor
       end
-      # Return the 8 most recent transactions
-      added.sort_by(&:date).map(&:to_hash)
+      # Return the 10 most recent transactions
+      added.sort_by(&:date).map(&:to_hash).first(10)
     rescue Plaid::ApiError => e
       log_error(e)
       raise e

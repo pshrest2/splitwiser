@@ -1,18 +1,30 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { createUserAccount, getUserAccounts } from "../../api/apiCalls";
+import {
+  createUserAccount,
+  getTransactions,
+  getUserAccounts,
+} from "../../api/apiCalls";
 import { toast } from "react-toastify";
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import moment from "moment";
 import PlaidLink from "../../components/PlaidLink";
+import TransactionsModal from "./TransactionsModal";
 
 const formatDateTime = (dateTime) => {
   return moment(dateTime).format("MMMM DD, YYYY hh:mm A");
 };
 
+const formatCurrency = (number, code) => {
+  if (!number) return "no data";
+  return ` ${parseFloat(number.toFixed(2)).toLocaleString("en")} ${code}`;
+};
+
 const Accounts = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const [accounts, setAccounts] = useState([]);
+  const [showTransactions, setShowTransactions] = useState(false);
+  const [transactions, setTransactions] = useState([]);
 
   const fetchAccounts = useCallback(async () => {
     const accessToken = await getAccessTokenSilently();
@@ -25,6 +37,27 @@ const Accounts = () => {
       setAccounts(result);
     }
   }, [getAccessTokenSilently, user.sub]);
+
+  const fetchTransactions = useCallback(
+    async (account) => {
+      try {
+        const accessToken = await getAccessTokenSilently();
+        const result = await getTransactions(user.sub, account.id, accessToken);
+
+        setShowTransactions(true);
+        setTransactions(
+          result.latest_transactions?.map((t) => ({
+            name: t.name,
+            amount: formatCurrency(t.amount, t.iso_currency_code),
+            date: t.date,
+          })) || []
+        );
+      } catch (errorResponse) {
+        toast.error(errorResponse.error);
+      }
+    },
+    [getAccessTokenSilently, user.sub]
+  );
 
   const onSuccess = useCallback(
     async (public_token, metadata) => {
@@ -57,6 +90,7 @@ const Accounts = () => {
             <th>Created At</th>
             <th>Update At</th>
             <th>Expired</th>
+            <th></th>
           </tr>
         </thead>
 
@@ -67,12 +101,26 @@ const Accounts = () => {
               <td>{formatDateTime(account.created_at)}</td>
               <td>{formatDateTime(account.updated_at)}</td>
               <td>{account.access_token_expired ? "Yes" : "No"}</td>
+              <td>
+                <Button
+                  variant="secondary"
+                  onClick={() => fetchTransactions(account)}
+                >
+                  Get Transactions
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
       <PlaidLink onSuccess={onSuccess} />
+
+      <TransactionsModal
+        show={showTransactions}
+        onHide={() => setShowTransactions(false)}
+        transactions={transactions}
+      />
     </div>
   );
 };

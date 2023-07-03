@@ -31,3 +31,12 @@ export function deleteUserAccount(user_id, account_id, token) {
     { method: "DELETE" }
   );
 }
+
+// user account transactions
+
+export function getTransactions(user_id, account_id, token) {
+  return API.fetchJSON(
+    `/api/v1/users/${user_id}/accounts/${account_id}/transactions`,
+    token
+  );
+}

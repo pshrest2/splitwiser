@@ -19,7 +19,7 @@ module Api
       def update
         @api.update(params[:id], user_params)
 
-        render_success('User updated successfully')
+        render_success("User updated successfully")
       rescue StandardError => _e
         render_error
       end

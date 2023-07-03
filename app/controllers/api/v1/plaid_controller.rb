@@ -3,7 +3,6 @@ module Api
     # app/controllers/api/v1/plaid
     class PlaidController < ApplicationController
       before_action :authorize
-      attr_reader :access_token
 
       # GET /plaid
       def index
@@ -13,32 +12,6 @@ module Api
         render json: { link_token: result }, status: :ok
       rescue StandardError => _e
         render_error
-      end
-
-      # POST /plaid/set_access_token
-      def set_access_token
-        api = PlaidApi::SetAccessToken.new(plaid_params[:public_token])
-        api.call
-
-        head :ok
-      rescue StandardError => _e
-        render_error
-      end
-
-      # GET /plaid/transactions
-      def transactions
-        api = PlaidApi::Transactions.new
-        result = api.call
-
-        render json: { latest_transactions: result }, status: :ok
-      rescue StandardError => _e
-        render_error
-      end
-
-      private
-
-      def plaid_params
-        params.require(:plaid).permit(:public_token)
       end
     end
   end

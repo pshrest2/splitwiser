@@ -4,7 +4,6 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import RequireAuth from "./components/RequireAuth";
 import HomePage from "./pages/HomePage";
-import AccountPage from "./pages/AccountPage";
 import ProfilePage from "./pages/ProfilePage";
 
 import "./App.scss";
@@ -19,14 +18,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" exact element={<HomePage />} />
-          <Route
-            path="/account"
-            element={
-              <RequireAuth>
-                <AccountPage />
-              </RequireAuth>
-            }
-          />
           <Route
             path="/profile"
             element={
