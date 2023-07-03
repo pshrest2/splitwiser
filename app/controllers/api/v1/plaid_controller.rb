@@ -5,14 +5,8 @@ module Api
       before_action :authorize
       attr_reader :access_token
 
+      # GET /plaid
       def index
-        # TODO: also check if the access token is expired
-        account_linked = Rails.cache.exist?('plaid_access_token')
-        render json: { account_linked: }, status: :ok
-      end
-
-      # POST /create_link_token
-      def create_link_token
         api = PlaidApi::CreateLinkToken.new
         result = api.call
 
@@ -20,8 +14,8 @@ module Api
       rescue StandardError => _e
         render_error
       end
-
-      # POST /set_access_token
+    
+      # POST /plaid/set_access_token
       def set_access_token
         api = PlaidApi::SetAccessToken.new(plaid_params[:public_token])
         api.call
@@ -31,7 +25,7 @@ module Api
         render_error
       end
 
-      # GET /transactions
+      # GET /plaid/transactions
       def transactions
         api = PlaidApi::Transactions.new
         result = api.call

@@ -4,6 +4,11 @@ import { getUserAccounts } from "../../api/apiCalls";
 import { toast } from "react-toastify";
 import { Table } from "react-bootstrap";
 import moment from "moment";
+import PlaidLink from "../../components/PlaidLink";
+
+const formatDateTime = (dateTime) => {
+  return moment(dateTime).format("MMMM DD, YYYY hh:mm A");
+};
 
 const Accounts = () => {
   const { user, getAccessTokenSilently } = useAuth0();
@@ -21,9 +26,9 @@ const Accounts = () => {
     }
   }, [getAccessTokenSilently, user.sub]);
 
-  const formatDateTime = (dateTime) => {
-    return moment(dateTime).format("MMMM DD, YYYY hh:mm A");
-  };
+  const onSuccess = useCallback(async (public_token, metadata) => {
+    console.log(public_token, metadata);
+  }, []);
 
   useEffect(() => {
     fetchAccounts();
@@ -53,6 +58,8 @@ const Accounts = () => {
           ))}
         </tbody>
       </Table>
+
+      <PlaidLink onSuccess={onSuccess} />
     </div>
   );
 };

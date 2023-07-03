@@ -1,5 +1,11 @@
 import API from ".";
 
+// plaid
+export function getLinkToken(token) {
+  return API.fetchJSON("/api/v1/plaid", token);
+}
+
+// users
 export function getUser(id, token) {
   return API.fetchJSON(`/api/v1/users/${id}`, token);
 }
@@ -8,6 +14,7 @@ export function updateUser(id, body, token) {
   return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PATCH" });
 }
 
+// user accounts
 export function getUserAccounts(user_id, token) {
   return API.fetchJSON(`/api/v1/users/${user_id}/accounts`, token);
 }
