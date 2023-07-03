@@ -10,6 +10,7 @@ import allReducers from "./reducers";
 
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = configureStore({

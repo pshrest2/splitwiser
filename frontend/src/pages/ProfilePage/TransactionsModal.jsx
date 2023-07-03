@@ -1,13 +1,19 @@
 import { Button, Modal, Table } from "react-bootstrap";
+import Skeleton from "react-loading-skeleton";
 
-const TransactionsModal = ({ show, onHide, transactions }) => {
+const TransactionsModal = (props) => {
+  const {
+    onHide,
+    transactionsInfo: { show, transactions, account },
+  } = props;
+
   return (
     <Modal show={show} onHide={onHide} size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Transactions</Modal.Title>
+        <Modal.Title>Transactions for {account.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Table hover striped>
+        <Table hover>
           <thead>
             <tr>
               <th>Name</th>
@@ -16,6 +22,20 @@ const TransactionsModal = ({ show, onHide, transactions }) => {
             </tr>
           </thead>
           <tbody>
+            {transactions.length === 0 &&
+              [1, 2, 3].map((i) => (
+                <tr key={i}>
+                  <td>
+                    <Skeleton />
+                  </td>
+                  <td>
+                    <Skeleton />
+                  </td>
+                  <td>
+                    <Skeleton />
+                  </td>
+                </tr>
+              ))}
             {transactions.map((t) => (
               <tr key={t.name}>
                 <td>{t.name}</td>
