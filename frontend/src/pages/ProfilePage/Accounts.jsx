@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { getUserAccounts } from "../../api/apiCalls";
+import { createUserAccount, getUserAccounts } from "../../api/apiCalls";
 import { toast } from "react-toastify";
 import { Table } from "react-bootstrap";
 import moment from "moment";
@@ -26,9 +26,22 @@ const Accounts = () => {
     }
   }, [getAccessTokenSilently, user.sub]);
 
-  const onSuccess = useCallback(async (public_token, metadata) => {
-    console.log(public_token, metadata);
-  }, []);
+  const onSuccess = useCallback(
+    async (public_token, metadata) => {
+      console.log(public_token, metadata);
+      const account = {
+        name: metadata.institution.name,
+        public_token: public_token,
+      };
+      const accessToken = await getAccessTokenSilently();
+      const result = await createUserAccount(user.sub, account, accessToken);
+
+      if (result.error)
+        toast.error("Failed to add account. Please try again later");
+      else toast.success("Account added successfully");
+    },
+    [getAccessTokenSilently, user.sub]
+  );
 
   useEffect(() => {
     fetchAccounts();

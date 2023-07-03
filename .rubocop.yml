@@ -1,10 +1,16 @@
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
+Metrics/CyclomaticComplexity:
+  Enabled: false
+  EnforcedStyle: never
+Style/NumericLiterals:
+  EnforcedStyle: never
 Documentation:
   Enabled: false
 Metrics/MethodLength:
   Max: 100
 Layout/LineLength:
   Max: 200
-Style/NumericLiterals:
-  EnforcedStyle: never
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes

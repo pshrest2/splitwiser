@@ -2,7 +2,7 @@ module Api
   module V1
     # app/controllers/api/v1/test_controller.rb
     class UsersController < ApplicationController
-      # before_action :authorize
+      before_action :authorize
 
       def initialize
         super

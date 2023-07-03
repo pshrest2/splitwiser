@@ -14,7 +14,7 @@ module Api
       rescue StandardError => _e
         render_error
       end
-    
+
       # POST /plaid/set_access_token
       def set_access_token
         api = PlaidApi::SetAccessToken.new(plaid_params[:public_token])
