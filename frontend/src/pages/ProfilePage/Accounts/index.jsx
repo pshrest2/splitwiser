@@ -26,7 +26,6 @@ const Accounts = () => {
 
   const onSuccess = useCallback(
     async (public_token, metadata) => {
-      console.log(public_token, metadata);
       const account = {
         name: metadata.institution.name,
         public_token: public_token,
@@ -50,7 +49,6 @@ const Accounts = () => {
         <AgGridReact
           rowData={accounts}
           columnDefs={columnDefs}
-          rowSelection="multiple"
           domLayout="autoHeight"
           onGridReady={fetchAccounts}
           onGridSizeChanged={({ api }) => api.sizeColumnsToFit()}

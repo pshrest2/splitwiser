@@ -7,51 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import TransactionsModal from "./TransactionsModal";
 
-import { deleteUserAccount, getTransactions } from "../../../../api/apiCalls";
+import { deleteUserAccount } from "../../../../api/apiCalls";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
-
-const formatCurrency = (number, code) => {
-  if (!number) return "no data";
-  return ` ${parseFloat(number.toFixed(2)).toLocaleString("en")} ${code}`;
-};
-
-const initialTransactionInfo = {
-  show: false,
-  account: {},
-  transactions: [],
-};
 
 const ActiveActions = ({ account }) => {
   const { user, getAccessTokenSilently } = useAuth0();
-  const [transactionInfo, setTransactionInfo] = useState(
-    initialTransactionInfo
-  );
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-
-  const fetchTransactions = useCallback(
-    async (account) => {
-      try {
-        setTransactionInfo((prev) => ({ ...prev, account, show: true }));
-
-        const accessToken = await getAccessTokenSilently();
-        const result = await getTransactions(user.sub, account.id, accessToken);
-
-        setTransactionInfo((prev) => ({
-          ...prev,
-          transactions:
-            result.latest_transactions?.map((t) => ({
-              name: t.name,
-              amount: formatCurrency(t.amount, t.iso_currency_code),
-              date: t.date,
-            })) || [],
-        }));
-      } catch (errorResponse) {
-        toast.error(errorResponse.error);
-        setTransactionInfo(initialTransactionInfo);
-      }
-    },
-    [getAccessTokenSilently, setTransactionInfo, user.sub]
-  );
+  const [showTransactions, setShowTransactions] = useState(false);
 
   const deleteAccount = useCallback(async () => {
     try {
@@ -67,7 +29,7 @@ const ActiveActions = ({ account }) => {
 
   return (
     <>
-      <Button variant="link" onClick={() => fetchTransactions(account)}>
+      <Button variant="link" onClick={() => setShowTransactions(true)}>
         <FontAwesomeIcon icon={faReceipt} />
       </Button>
       <Button
@@ -79,8 +41,9 @@ const ActiveActions = ({ account }) => {
       </Button>
 
       <TransactionsModal
-        onHide={() => setTransactionInfo(initialTransactionInfo)}
-        transactionsInfo={transactionInfo}
+        show={showTransactions}
+        onHide={() => setShowTransactions(false)}
+        account={account}
       />
       <ConfirmDeleteModal
         show={showConfirmDelete}

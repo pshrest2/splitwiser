@@ -1,50 +1,82 @@
-import { Button, Modal, Table } from "react-bootstrap";
-import Skeleton from "react-loading-skeleton";
+import { Button, Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
+import { AgGridReact } from "ag-grid-react";
+import { useCallback, useState } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
-const TransactionsModal = (props) => {
-  const {
-    onHide,
-    transactionsInfo: { show, transactions, account },
-  } = props;
+import { getTransactions } from "../../../../api/apiCalls";
+
+const defaultColDef = {
+  sortable: true,
+  resizable: true,
+  suppressMovable: true,
+};
+
+const columnDefs = [
+  {
+    field: "name",
+  },
+  {
+    field: "amount",
+  },
+  {
+    field: "date",
+  },
+];
+
+const formatCurrency = (number, code) => {
+  if (!number) return "no data";
+  return ` ${parseFloat(number.toFixed(2)).toLocaleString("en")} ${code}`;
+};
+
+const TransactionsModal = ({ show, onHide, account }) => {
+  const { user, getAccessTokenSilently } = useAuth0();
+  const [transactions, setTransactions] = useState([]);
+
+  const fetchTransactions = useCallback(
+    async ({ api }) => {
+      try {
+        api.showLoadingOverlay();
+        const accessToken = await getAccessTokenSilently();
+        const result = await getTransactions(user.sub, account.id, accessToken);
+
+        setTransactions(
+          result.latest_transactions?.map((t) => ({
+            name: t.name,
+            amount: formatCurrency(t.amount, t.iso_currency_code),
+            date: t.date,
+          })) || []
+        );
+      } catch (errorResponse) {
+        toast.error(errorResponse.error);
+        setTransactions([]);
+      }
+    },
+    [account.id, getAccessTokenSilently, user.sub]
+  );
+
+  const closeModal = () => {
+    setTransactions([]);
+    onHide();
+  };
 
   return (
-    <Modal show={show} onHide={onHide} size="lg">
+    <Modal show={show} onHide={closeModal} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Transactions for {account.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Table hover>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Amount</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.length === 0 &&
-              [1, 2, 3].map((i) => (
-                <tr key={i}>
-                  <td>
-                    <Skeleton />
-                  </td>
-                  <td>
-                    <Skeleton />
-                  </td>
-                  <td>
-                    <Skeleton />
-                  </td>
-                </tr>
-              ))}
-            {transactions.map((t) => (
-              <tr key={t.name}>
-                <td>{t.name}</td>
-                <td>{t.amount}</td>
-                <td>{t.date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <div className="ag-theme-alpine">
+          <AgGridReact
+            rowData={transactions}
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            onGridReady={fetchTransactions}
+            onGridSizeChanged={({ api }) => api.sizeColumnsToFit()}
+            domLayout="autoHeight"
+            suppressCellFocus
+          />
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary">Split</Button>
