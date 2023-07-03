@@ -3,11 +3,11 @@
 one:
   name: MyString
   access_token: MyString
-  access_token_expired: false
+  status: MyString
   user_id: MyString
 
 two:
   name: MyString
   access_token: MyString
-  access_token_expired: false
+  status: MyString
   user_id: MyString
