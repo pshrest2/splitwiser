@@ -2,7 +2,7 @@ import { Button, Modal, Table } from "react-bootstrap";
 
 const TransactionsModal = ({ show, onHide, transactions }) => {
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={onHide} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Transactions</Modal.Title>
       </Modal.Header>
