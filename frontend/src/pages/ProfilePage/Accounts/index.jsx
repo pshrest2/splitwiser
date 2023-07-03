@@ -1,36 +1,17 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "react-toastify";
 import { AgGridReact } from "ag-grid-react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import columnDefs from "./columns";
 
-import TransactionsModal from "../TransactionsModal";
-
-import {
-  createUserAccount,
-  getTransactions,
-  getUserAccounts,
-} from "../../../api/apiCalls";
+import { createUserAccount, getUserAccounts } from "../../../api/apiCalls";
 import PlaidLink from "../../../components/PlaidLink";
-
-const initialTransactionInfo = {
-  show: false,
-  account: {},
-  transactions: [],
-};
-
-const formatCurrency = (number, code) => {
-  if (!number) return "no data";
-  return ` ${parseFloat(number.toFixed(2)).toLocaleString("en")} ${code}`;
-};
 
 const Accounts = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const [accounts, setAccounts] = useState([]);
-  const [transactionInfo, setTransactionInfo] = useState(
-    initialTransactionInfo
-  );
+
   const fetchAccounts = useCallback(async () => {
     const accessToken = await getAccessTokenSilently();
     const result = await getUserAccounts(user.sub, accessToken);
@@ -61,42 +42,11 @@ const Accounts = () => {
     [fetchAccounts, getAccessTokenSilently, user.sub]
   );
 
-  const fetchTransactions = useCallback(
-    async (event) => {
-      console.log(event);
-      const account = event.data;
-      try {
-        setTransactionInfo((prev) => ({ ...prev, account, show: true }));
-
-        const accessToken = await getAccessTokenSilently();
-        const result = await getTransactions(user.sub, account.id, accessToken);
-
-        setTransactionInfo((prev) => ({
-          ...prev,
-          transactions:
-            result.latest_transactions?.map((t) => ({
-              name: t.name,
-              amount: formatCurrency(t.amount, t.iso_currency_code),
-              date: t.date,
-            })) || [],
-        }));
-      } catch (errorResponse) {
-        toast.error(errorResponse.error);
-        setTransactionInfo(initialTransactionInfo);
-      }
-    },
-    [getAccessTokenSilently, setTransactionInfo, user.sub]
-  );
-
-  // useEffect(() => {
-  //   fetchAccounts();
-  // }, [fetchAccounts]);
-
   return (
     <div className="mt-4">
       <h2>Linked Accounts</h2>
 
-      <div className="ag-theme-alpine">
+      <div className="ag-theme-alpine my-3">
         <AgGridReact
           rowData={accounts}
           columnDefs={columnDefs}
@@ -104,17 +54,12 @@ const Accounts = () => {
           domLayout="autoHeight"
           onGridReady={fetchAccounts}
           onGridSizeChanged={({ api }) => api.sizeColumnsToFit()}
-          onRowClicked={fetchTransactions}
-          suppressCellFocus
+          suppressRowClickSelection
+          suppressRowHoverHighlight
         />
       </div>
 
       <PlaidLink onSuccess={onSuccess} />
-
-      <TransactionsModal
-        onHide={() => setTransactionInfo(initialTransactionInfo)}
-        transactionsInfo={transactionInfo}
-      />
     </div>
   );
 };

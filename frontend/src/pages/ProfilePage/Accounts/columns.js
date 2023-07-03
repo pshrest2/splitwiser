@@ -42,7 +42,6 @@ const columnDefs = [
     cellRenderer: Actions,
     valueGetter: (params) => ({
       account: params.data,
-      refresh: () => {},
     }),
   },
 ];

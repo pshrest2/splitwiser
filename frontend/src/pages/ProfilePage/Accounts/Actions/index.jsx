@@ -1,13 +1,11 @@
 import { ACCOUNT_STATUSES } from "../../../../helpers/enums";
 import ActiveActions from "./ActiveActions";
-import ExpiredActions from "./ExpiredActions";
 
-const Actions = ({ value: { account, refresh } }) => {
+const Actions = ({ value: { account } }) => {
   switch (account.status) {
     case ACCOUNT_STATUSES.active:
-      return <ActiveActions account={account} refresh={refresh} />;
+      return <ActiveActions account={account} />;
     case ACCOUNT_STATUSES.expired:
-      return <ExpiredActions />;
     default:
       return null;
   }
