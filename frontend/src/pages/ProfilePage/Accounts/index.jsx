@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { toast } from "react-toastify";
 import { AgGridReact } from "ag-grid-react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -11,16 +11,19 @@ import PlaidLink from "../../../components/PlaidLink";
 const Accounts = () => {
   const { user, getAccessTokenSilently } = useAuth0();
   const [accounts, setAccounts] = useState([]);
+  const gridApi = useRef();
 
   const fetchAccounts = useCallback(async () => {
-    const accessToken = await getAccessTokenSilently();
-    const result = await getUserAccounts(user.sub, accessToken);
-    if (result.error)
+    try {
+      gridApi.current.api.showLoadingOverlay();
+      const accessToken = await getAccessTokenSilently();
+      const result = await getUserAccounts(user.sub, accessToken);
+      setAccounts(result);
+    } catch (errorResponse) {
+      setAccounts([]);
       toast.error(
         "There was a problem getting retrieving the linked accounts. Try again later"
       );
-    else {
-      setAccounts(result);
     }
   }, [getAccessTokenSilently, user.sub]);
 
@@ -47,6 +50,7 @@ const Accounts = () => {
 
       <div className="ag-theme-alpine my-3">
         <AgGridReact
+          ref={gridApi}
           rowData={accounts}
           columnDefs={columnDefs}
           domLayout="autoHeight"
