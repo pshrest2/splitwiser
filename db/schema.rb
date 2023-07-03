@@ -16,9 +16,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_02_160800) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
-    t.string "access_token", null: false
+    t.string "access_token"
+    t.string "rotated_access_token"
     t.string "status", null: false
     t.string "user_id", null: false
+    t.date "expiration_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
