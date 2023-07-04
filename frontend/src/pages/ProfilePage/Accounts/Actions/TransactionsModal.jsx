@@ -15,6 +15,8 @@ const defaultColDef = {
 const columnDefs = [
   {
     field: "name",
+    headerCheckboxSelection: true,
+    checkboxSelection: true,
   },
   {
     field: "amount",
@@ -73,8 +75,11 @@ const TransactionsModal = ({ show, onHide, account }) => {
             defaultColDef={defaultColDef}
             onGridReady={fetchTransactions}
             onGridSizeChanged={({ api }) => api.sizeColumnsToFit()}
+            isRowSelectable={() => true}
             domLayout="autoHeight"
+            rowSelection="multiple"
             suppressCellFocus
+            rowMultiSelectWithClick
           />
         </div>
       </Modal.Body>
