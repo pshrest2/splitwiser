@@ -84,7 +84,10 @@ const TransactionsModal = ({ show, onHide, account }) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary">Split</Button>
+        <Button variant="secondary" onClick={closeModal}>
+          Cancel
+        </Button>
+        <Button>Split</Button>
       </Modal.Footer>
     </Modal>
   );
