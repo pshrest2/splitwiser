@@ -9,7 +9,7 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    if (isAuthenticated) navigate("/account");
+    if (isAuthenticated) navigate("/profile");
     else loginWithRedirect();
   };
   return (
