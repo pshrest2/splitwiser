@@ -1,14 +1,13 @@
 import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
-import ReactDOM from "react-dom/client";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { configureStore } from "@reduxjs/toolkit";
+import ReactDOM from "react-dom/client";
 
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import allReducers from "./reducers";
 
-import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "ag-grid-community/styles/ag-grid.css";

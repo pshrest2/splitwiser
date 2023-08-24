@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { usePlaidLink } from "react-plaid-link";
-import usePlaidToken from "../../hooks/usePlaidToken";
+import usePlaidToken from "../hooks/usePlaidToken";
 
 const PlaidLink = ({ onSuccess }) => {
   const token = usePlaidToken();

@@ -6,7 +6,7 @@ import RequireAuth from "./components/RequireAuth";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 
-import "./App.scss";
+import "./styles/theme.scss";
 
 function App() {
   const { isLoading } = useAuth0();

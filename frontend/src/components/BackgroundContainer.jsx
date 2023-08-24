@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container } from "react-bootstrap";
 
-import SplitwiserNav from "../SplitwiserNav";
-
-import "./index.scss";
+import SplitwiserNav from "./SplitwiserNav";
 
 const BackgroundContainer = ({ children, className }) => (
   <div className={`background-container ${className}`}>
