@@ -1,13 +1,12 @@
-import BackgroundContainer from "../../components/BackgroundContainer";
 import Profile from "./Profile";
 import Accounts from "./Accounts";
 
 const ProfilePage = () => {
   return (
-    <BackgroundContainer>
+    <div>
       <Profile />
       <Accounts />
-    </BackgroundContainer>
+    </div>
   );
 };
 

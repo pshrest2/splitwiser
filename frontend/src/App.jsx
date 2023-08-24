@@ -5,8 +5,11 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
+import Unauthorized from "./pages/Unauthorized";
+import NotFound from "./pages/NotFound";
 
 import "./styles/theme.scss";
+import BackgroundContainer from "./components/BackgroundContainer";
 
 function App() {
   const { isLoading } = useAuth0();
@@ -14,10 +17,11 @@ function App() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="app">
+    <BackgroundContainer className="app">
       <BrowserRouter>
         <Routes>
-          <Route path="/" exact element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route
             path="/profile"
             element={
@@ -26,10 +30,11 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />
-    </div>
+    </BackgroundContainer>
   );
 }
 
