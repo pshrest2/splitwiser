@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import Column from "./Column";
 import CollectMoneyModal from "./modals/CollectMoneyModal";
-import { clear, updateColumn } from "../../Actions/receipt";
+import { clear, updateColumn } from "../actions/receipt";
 
 const SplitReceipt = () => {
   const dispatch = useDispatch();
