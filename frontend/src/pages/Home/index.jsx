@@ -34,7 +34,7 @@ const Home = () => {
       {showUploadReceipt && (
         <UploadReceiptModal
           show={showUploadReceipt}
-          onClose={() => setShowUploadReceipt(false)}
+          onHide={() => setShowUploadReceipt(false)}
         />
       )}
     </div>

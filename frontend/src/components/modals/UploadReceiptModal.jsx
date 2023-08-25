@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import PropTypes from "prop-types";
 
-const UploadReceiptModal = ({ show, handleClose }) => {
+const UploadReceiptModal = ({ show, onHide }) => {
   const [form, setForm] = useState({
     receiptName: "",
     receiptImage: null,
@@ -33,7 +33,7 @@ const UploadReceiptModal = ({ show, handleClose }) => {
       className="upload-receipt-modal"
       size="lg"
       show={show}
-      onHide={handleClose}
+      onHide={onHide}
     >
       <Modal.Header closeButton>
         <Modal.Title>{`Upload your receipt`}</Modal.Title>
@@ -47,21 +47,23 @@ const UploadReceiptModal = ({ show, handleClose }) => {
             onChange={(e) => setForm({ ...form, receiptName: e.target.value })}
             required
           />
+
           <input
             type="file"
+            id="receipt"
+            className="my-3"
+            name="receipt"
+            accept="image/png, image/jpeg"
             onChange={changeImage}
-            style={{ display: "none" }}
-            accept="image/x-png,image/gif,image/jpeg"
-            required
           />
-          <div className="buttons-container">
-            <Button variant="secondary" onClick={handleClose}>
-              Cancel
-            </Button>
-            <Button type="submit">Upload</Button>
-          </div>
         </Form>
       </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onHide}>
+          Cancel
+        </Button>
+        <Button type="submit">Upload</Button>
+      </Modal.Footer>
     </Modal>
   );
 };
@@ -70,5 +72,5 @@ export default UploadReceiptModal;
 
 UploadReceiptModal.propTypes = {
   show: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
 };
