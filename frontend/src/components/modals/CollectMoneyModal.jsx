@@ -5,7 +5,7 @@ import CustomButton from "../../Common/CustomButton";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 
-const CollectMoneyModal = ({ show, handleClose }) => {
+const CollectMoneyModal = ({ show, onHide }) => {
   const data = useSelector((state) => state.receipt);
   const { columnsData, people, receiptData } = data;
   const [personTotal, setPersonTotal] = useState([]);
@@ -66,7 +66,7 @@ const CollectMoneyModal = ({ show, handleClose }) => {
       className="collect-money-modal"
       size="lg"
       show={show}
-      onHide={handleClose}
+      onHide={onHide}
     >
       <Modal.Header closeButton>
         <Modal.Title>Now the fun part</Modal.Title>
@@ -112,7 +112,7 @@ const CollectMoneyModal = ({ show, handleClose }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <CustomButton onClick={handleClose} variant="secondary">
+        <CustomButton onClick={onHide} variant="secondary">
           Cancel
         </CustomButton>
         <CustomButton variant="success" onClick={() => {}}>
@@ -127,5 +127,5 @@ export default CollectMoneyModal;
 
 CollectMoneyModal.propTypes = {
   show: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
 };

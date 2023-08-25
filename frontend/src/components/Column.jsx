@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
@@ -14,9 +14,8 @@ import {
   addColumnPerson,
   updateColumn,
   updateColumnKey,
-} from "../../Actions/receipt";
-import { display } from "../../Actions/modal";
-import { Modals } from "../../Enums/Modals";
+} from "../actions/receipt";
+import AddPersonModal from "./modals/AddPersonModal";
 
 const Container = styled.div`
   margin: 8px;
@@ -50,6 +49,7 @@ const Span = styled.span`
 const Column = ({ column, items }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.receipt);
+  const [showAddPerson, setShowAddPerson] = useState(false);
 
   const {
     columnsData,
@@ -87,7 +87,7 @@ const Column = ({ column, items }) => {
   };
   const handleCreatePeople = (inputValue) => {
     dispatch(addColumnPerson(inputValue, column.id));
-    dispatch(display(Modals.AddPersonModal, true));
+    setShowAddPerson(true);
   };
   return (
     <Container>
@@ -117,6 +117,13 @@ const Column = ({ column, items }) => {
           </ItemList>
         )}
       </Droppable>
+
+      {showAddPerson && (
+        <AddPersonModal
+          show={showAddPerson}
+          onHide={() => setShowAddPerson(false)}
+        />
+      )}
     </Container>
   );
 };

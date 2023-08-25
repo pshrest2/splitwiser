@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
 import Column from "./Column";
+import CollectMoneyModal from "./modals/CollectMoneyModal";
 import { clear, updateColumn } from "../../Actions/receipt";
-import { display } from "../../Actions/modal";
-import { Modals } from "../../Enums/Modals";
 
 const SplitReceipt = () => {
   const dispatch = useDispatch();
+  const [showCollectMoney, setShowCollectMoney] = useState(false);
   const data = useSelector((state) => state.receipt);
   const { receiptData, columnsData } = data;
 
@@ -95,10 +95,7 @@ const SplitReceipt = () => {
           Clear Receipt
         </Button>
         <Button onClick={handleCreateColumn}>Add Column</Button>
-        <Button
-          variant="success"
-          onClick={() => dispatch(display(Modals.CollectMoneyModal, true))}
-        >
+        <Button variant="success" onClick={() => setShowCollectMoney(true)}>
           Collect Money
         </Button>
       </div>
@@ -116,6 +113,13 @@ const SplitReceipt = () => {
           })}
         </div>
       </DragDropContext>
+
+      {showCollectMoney && (
+        <CollectMoneyModal
+          show={showCollectMoney}
+          onHide={() => setShowCollectMoney(false)}
+        />
+      )}
     </div>
   );
 };

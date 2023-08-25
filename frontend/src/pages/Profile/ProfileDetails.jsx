@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
 import { Button, Form, Image } from "react-bootstrap";
-import { updateUser } from "../../api/apiCalls";
 import { toast } from "react-toastify";
-import useAccessToken from "../../hooks/useAccessToken";
 import { useAuth0 } from "@auth0/auth0-react";
+
+import { updateUser } from "../../api/apiCalls";
+import useAccessToken from "../../hooks/useAccessToken";
 
 const Profile = () => {
   const { user: auth0_user } = useAuth0();

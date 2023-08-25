@@ -3,9 +3,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 import RequireAuth from "./components/RequireAuth";
-import HomePage from "./pages/HomePage";
-import ProfilePage from "./pages/ProfilePage";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 import Unauthorized from "./pages/Unauthorized";
+import Receipt from "./pages/Receipt";
 import NotFound from "./pages/NotFound";
 
 import "./styles/theme.scss";
@@ -20,13 +21,14 @@ function App() {
     <BackgroundContainer className="app">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/receipt" element={<Receipt />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route
             path="/profile"
             element={
               <RequireAuth>
-                <ProfilePage />
+                <Profile />
               </RequireAuth>
             }
           />
