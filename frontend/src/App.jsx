@@ -18,8 +18,8 @@ function App() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <BackgroundContainer className="app">
-      <BrowserRouter>
+    <BrowserRouter>
+      <BackgroundContainer className="app">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/receipt" element={<Receipt />} />
@@ -34,9 +34,9 @@ function App() {
           />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-      <ToastContainer />
-    </BackgroundContainer>
+        <ToastContainer />
+      </BackgroundContainer>
+    </BrowserRouter>
   );
 }
 
