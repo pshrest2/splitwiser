@@ -19,8 +19,12 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class Account < ApplicationRecord
-  enum status: { active: "active", expired: "expired" }
-
-  belongs_to :user
+FactoryBot.define do
+  factory :account do
+    access_token { Faker::Code.isbn }
+    expiration_date { Faker::Date.birthday }
+    name { Faker::Bank.name }
+    status { "active" }
+    user { User.new(email: Faker::Internet.email) }
+  end
 end
