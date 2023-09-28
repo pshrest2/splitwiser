@@ -12,7 +12,11 @@
 #
 class User < ApplicationRecord
   has_many :user_groups
+  has_many :user_expenses
+
   has_many :groups, through: :user_groups
+  has_many :expenses, through: :user_expenses
+
   has_many :accounts
 
   validates :email, presence: true, uniqueness: true

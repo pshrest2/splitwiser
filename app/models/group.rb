@@ -11,6 +11,7 @@
 class Group < ApplicationRecord
   has_many :user_groups
   has_many :users, through: :user_groups
+  has_many :expenses
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 end
