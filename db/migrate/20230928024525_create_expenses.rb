@@ -6,9 +6,9 @@ class CreateExpenses < ActiveRecord::Migration[7.0]
       t.string :description
       t.decimal :amount, precision: 10, scale: 2
       t.datetime :paid_at
+      t.string :receipt_url, null: true
       t.references :paid_by, null: false, foreign_key: { to_table: :users }
       t.references :group, null: true, foreign_key: true
-
       t.timestamps
     end
   end

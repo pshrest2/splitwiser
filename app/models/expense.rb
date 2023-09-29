@@ -7,6 +7,7 @@
 #  description    :string
 #  name           :string           not null
 #  paid_at        :datetime
+#  receipt_url    :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  group_id       :bigint
@@ -26,6 +27,8 @@
 class Expense < ApplicationRecord
   has_many :user_expenses
   has_many :users, through: :user_expenses
+
+  has_many :items
 
   belongs_to :group, optional: true
 end

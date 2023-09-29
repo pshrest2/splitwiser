@@ -7,6 +7,7 @@
 #  description    :string
 #  name           :string           not null
 #  paid_at        :datetime
+#  receipt_url    :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  group_id       :bigint
@@ -29,6 +30,7 @@ FactoryBot.define do
     description { "MyString" }
     amount { "9.99" }
     paid_at { "2023-09-27 21:45:25" }
+    receipt_url { "" }
     paid_by { nil }
     group { nil }
   end

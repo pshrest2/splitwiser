@@ -13,9 +13,11 @@
 class User < ApplicationRecord
   has_many :user_groups
   has_many :user_expenses
+  has_many :user_items
 
   has_many :groups, through: :user_groups
   has_many :expenses, through: :user_expenses
+  has_many :items, through: :user_items
 
   has_many :accounts
 

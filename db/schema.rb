@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_28_025404) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_29_025221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_025404) do
     t.string "description"
     t.decimal "amount", precision: 10, scale: 2
     t.datetime "paid_at"
+    t.string "receipt_url"
     t.bigint "paid_by_id", null: false
     t.bigint "group_id"
     t.datetime "created_at", null: false
@@ -44,6 +45,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_025404) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.decimal "amount"
+    t.string "quantity"
+    t.bigint "expense_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expense_id"], name: "index_items_on_expense_id"
   end
 
   create_table "user_expenses", force: :cascade do |t|
@@ -67,6 +78,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_025404) do
     t.index ["user_id"], name: "index_user_groups_on_user_id"
   end
 
+  create_table "user_items", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "item_id", null: false
+    t.decimal "amount_owed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_user_items_on_item_id"
+    t.index ["user_id"], name: "index_user_items_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email", null: false
@@ -79,8 +100,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_28_025404) do
   add_foreign_key "accounts", "users"
   add_foreign_key "expenses", "groups"
   add_foreign_key "expenses", "users", column: "paid_by_id"
+  add_foreign_key "items", "expenses"
   add_foreign_key "user_expenses", "expenses"
   add_foreign_key "user_expenses", "users"
   add_foreign_key "user_groups", "groups"
   add_foreign_key "user_groups", "users"
+  add_foreign_key "user_items", "items"
+  add_foreign_key "user_items", "users"
 end

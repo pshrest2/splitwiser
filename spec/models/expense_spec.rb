@@ -7,6 +7,7 @@
 #  description    :string
 #  name           :string           not null
 #  paid_at        :datetime
+#  receipt_url    :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  group_id       :bigint
