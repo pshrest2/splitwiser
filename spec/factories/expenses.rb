@@ -26,11 +26,11 @@
 #
 FactoryBot.define do
   factory :expense do
-    name { "MyString" }
-    description { "MyString" }
-    amount { "9.99" }
-    paid_at { "2023-09-27 21:45:25" }
-    receipt_url { "" }
+    name { 'MyString' }
+    description { 'MyString' }
+    amount { '9.99' }
+    paid_at { '2023-09-27 21:45:25' }
+    receipt_url { '' }
     paid_by { nil }
     group { nil }
   end

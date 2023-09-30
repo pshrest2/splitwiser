@@ -24,7 +24,7 @@
 #  fk_rails_...  (group_id => groups.id)
 #  fk_rails_...  (paid_by_id => users.id)
 #
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Expense, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"

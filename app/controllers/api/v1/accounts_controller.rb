@@ -18,9 +18,9 @@ module Api
         api.call!(@account)
 
         if @account.save
-          render_success("Account created successfully")
+          render_success('Account created successfully')
         else
-          render_error("Could not create account")
+          render_error('Could not create account')
         end
       end
 
@@ -28,9 +28,9 @@ module Api
       def destroy
         @account = Account.find_by(id: params[:id], user_id: params[:user_id])
         if @account.delete
-          render_success("Account deleted successfully")
+          render_success('Account deleted successfully')
         else
-          render_error("Could not delete account")
+          render_error('Could not delete account')
         end
       end
 

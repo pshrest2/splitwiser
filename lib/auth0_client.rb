@@ -1,7 +1,7 @@
 # app/lib/auth0_client.rb
 
-require "jwt"
-require "net/http"
+require 'jwt'
+require 'net/http'
 
 class Auth0Client
   # Auth0 Client Objects
@@ -11,8 +11,8 @@ class Auth0Client
   Token = Struct.new(:token) do
     def validate_permissions(permissions)
       required_permissions = Set.new permissions
-      scopes = token[0]["scope"]
-      token_permissions = scopes.present? ? Set.new(scopes.split(" ")) : Set.new
+      scopes = token[0]['scope']
+      token_permissions = scopes.present? ? Set.new(scopes.split(' ')) : Set.new
       required_permissions <= token_permissions
     end
   end
@@ -24,7 +24,7 @@ class Auth0Client
 
   def self.decode_token(token, jwks_hash)
     JWT.decode(token, nil, true, {
-                 algorithm: "RS256",
+                 algorithm: 'RS256',
                  iss: domain_url,
                  verify_iss: true,
                  aud: Rails.application.credentials.dig(:auth0, :audience),
@@ -43,7 +43,7 @@ class Auth0Client
     jwks_response = fetch_jwks
 
     unless jwks_response.is_a? Net::HTTPSuccess
-      error = Error.new(message: "Unable to verify credentials", status: :internal_server_error)
+      error = Error.new(message: 'Unable to verify credentials', status: :internal_server_error)
       return Response.new(nil, error)
     end
 
@@ -53,7 +53,7 @@ class Auth0Client
 
     Response.new(Token.new(decoded_token), nil)
   rescue JWT::VerificationError, JWT::DecodeError => _e
-    error = Error.new("Bad credentials", :unauthorized)
+    error = Error.new('Bad credentials', :unauthorized)
     Response.new(nil, error)
   end
 end

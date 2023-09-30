@@ -24,7 +24,7 @@ FactoryBot.define do
     access_token { Faker::Code.isbn }
     expiration_date { Faker::Date.birthday }
     name { Faker::Bank.name }
-    status { "active" }
+    status { 'active' }
     user { User.new(email: Faker::Internet.email) }
   end
 end

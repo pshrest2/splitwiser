@@ -20,9 +20,9 @@
 #
 FactoryBot.define do
   factory :item do
-    name { "MyString" }
-    amount { "9.99" }
-    quantity { "MyString" }
+    name { 'MyString' }
+    amount { '9.99' }
+    quantity { 'MyString' }
     expense { nil }
   end
 end

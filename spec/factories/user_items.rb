@@ -23,6 +23,6 @@ FactoryBot.define do
   factory :user_item do
     user { nil }
     item { nil }
-    amount_owed { "9.99" }
+    amount_owed { '9.99' }
   end
 end

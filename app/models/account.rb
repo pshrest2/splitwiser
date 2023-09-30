@@ -20,7 +20,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Account < ApplicationRecord
-  enum status: { active: "active", expired: "expired" }
+  enum status: { active: 'active', expired: 'expired' }
 
   belongs_to :user
 end
