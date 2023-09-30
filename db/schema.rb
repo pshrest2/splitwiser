@@ -30,14 +30,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_025221) do
     t.string 'name', null: false
     t.string 'description'
     t.decimal 'amount', precision: 10, scale: 2
-    t.datetime 'paid_at'
     t.string 'receipt_url'
-    t.bigint 'paid_by_id', null: false
+    t.bigint 'owner_id', null: false
     t.bigint 'group_id'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index ['group_id'], name: 'index_expenses_on_group_id'
-    t.index ['paid_by_id'], name: 'index_expenses_on_paid_by_id'
+    t.index ['owner_id'], name: 'index_expenses_on_owner_id'
   end
 
   create_table 'groups', force: :cascade do |t|
@@ -99,7 +98,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_29_025221) do
 
   add_foreign_key 'accounts', 'users'
   add_foreign_key 'expenses', 'groups'
-  add_foreign_key 'expenses', 'users', column: 'paid_by_id'
+  add_foreign_key 'expenses', 'users', column: 'owner_id'
   add_foreign_key 'items', 'expenses'
   add_foreign_key 'user_expenses', 'expenses'
   add_foreign_key 'user_expenses', 'users'

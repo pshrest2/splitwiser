@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :items, through: :user_items
 
   has_many :accounts
+  has_many :paid_expenses, class_name: 'Expense', foreign_key: 'owner_id'
 
   validates :email, presence: true, uniqueness: true
 end

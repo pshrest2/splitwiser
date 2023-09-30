@@ -28,12 +28,12 @@ RSpec.describe Account, type: :model do
   it { should belong_to(:user) }
 
   it 'allows status to be set to active' do
-    account = Account.new(status: 'active')
+    account = Account.new(status: 'active', user: User.new)
     expect(account).to be_valid
   end
 
   it 'allows status to be set to expired' do
-    account = Account.new(status: 'expired')
+    account = Account.new(status: 'expired', user: User.new)
     expect(account).to be_valid
   end
 
