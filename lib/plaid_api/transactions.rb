@@ -2,10 +2,10 @@ module PlaidApi
   class Transactions < PlaidApiBase
     def call(account_id)
       access_token = Account.find(account_id).access_token
-      raise StandardError, "Permission denied" if access_token.blank?
+      raise StandardError, 'Permission denied' if access_token.blank?
 
       # Set cursor to empty to receive all historical updates
-      cursor = ""
+      cursor = ''
 
       # New transaction updates since "cursor"
       added = []

@@ -19,7 +19,7 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe Account, type: :model do
   subject { build(:account) }
@@ -27,17 +27,17 @@ RSpec.describe Account, type: :model do
   it { is_expected.to be_valid }
   it { should belong_to(:user) }
 
-  it "allows status to be set to active" do
-    account = Account.new(status: "active")
+  it 'allows status to be set to active' do
+    account = Account.new(status: 'active')
     expect(account).to be_valid
   end
 
-  it "allows status to be set to expired" do
-    account = Account.new(status: "expired")
+  it 'allows status to be set to expired' do
+    account = Account.new(status: 'expired')
     expect(account).to be_valid
   end
 
-  it "raises an error if status is set to an invalid value" do
-    expect { Account.new(status: "invalid_status") }.to raise_error(ArgumentError, "'invalid_status' is not a valid status")
+  it 'raises an error if status is set to an invalid value' do
+    expect { Account.new(status: 'invalid_status') }.to raise_error(ArgumentError, "'invalid_status' is not a valid status")
   end
 end
