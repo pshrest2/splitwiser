@@ -3,8 +3,8 @@
 # Table name: items
 #
 #  id         :bigint           not null, primary key
-#  amount     :decimal(, )
-#  name       :string
+#  amount     :decimal(, )      not null
+#  name       :string           not null
 #  quantity   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -24,4 +24,7 @@ class Item < ApplicationRecord
   has_many :users, through: :user_items
 
   belongs_to :expense
+
+  validates :name, presence: true
+  validates :amount, presence: true
 end
