@@ -98,10 +98,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_01_150206) do
   end
 
   create_table 'users', force: :cascade do |t|
-    t.string 'username'
+    t.string 'name'
     t.string 'email', null: false
-    t.string 'full_name'
-    t.string 'profile_picture'
+    t.boolean 'email_verified', default: false, null: false
+    t.string 'sub', null: false
+    t.string 'picture'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
   end
