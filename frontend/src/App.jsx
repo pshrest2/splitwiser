@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 
 import "./styles/theme.scss";
 import BackgroundContainer from "./components/BackgroundContainer";
+import Callback from "./pages/Callback";
 
 function App() {
   const { isLoading } = useAuth0();
@@ -29,6 +30,14 @@ function App() {
             element={
               <RequireAuth>
                 <Profile />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/callback"
+            element={
+              <RequireAuth>
+                <Callback />
               </RequireAuth>
             }
           />
