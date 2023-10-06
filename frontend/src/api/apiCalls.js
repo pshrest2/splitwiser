@@ -14,6 +14,10 @@ export function updateUser(id, body, token) {
   return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PATCH" });
 }
 
+export function createUser(body, token) {
+  return API.fetchJSON(`/api/v1/users`, token, body);
+}
+
 // user accounts
 export function getUserAccounts(user_id, token) {
   return API.fetchJSON(`/api/v1/users/${user_id}/accounts`, token);
