@@ -29,7 +29,7 @@ module Secured
 
     return unless (error = validation_response.error)
 
-    render json: INSUFFICIENT_PERMISSIONS, status: :forbidden and return unless params[:user_id] == @decoded_token[:sub]
+    render json: INSUFFICIENT_PERMISSIONS, status: :forbidden and return unless params[:id] == @decoded_token[:sub]
 
     render json: { error: error.message }, status: error.status
   end
@@ -42,10 +42,8 @@ module Secured
     render json: INSUFFICIENT_PERMISSIONS, status: :forbidden
   end
 
-  def validate_user
-    return if @decoded_token.token[0]['sub'] == params[:user_id]
-
-    render json: INSUFFICIENT_PERMISSIONS, status: :forbidden
+  def user_id
+    @decoded_token.token[0]['sub']
   end
 
   private

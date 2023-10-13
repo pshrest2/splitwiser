@@ -1,18 +1,18 @@
 module Api
   module V1
     class AccountsController < ApplicationController
-      before_action :authorize, :validate_user
+      before_action :authorize
 
-      # GET /users/:user_id/accounts
+      # GET /accounts
       def index
-        @accounts = Account.where(user_id: params[:user_id]).select(:id, :name, :status, :created_at)
+        @accounts = Account.where(user_id:).select(:id, :name, :status, :created_at)
         render json: @accounts, status: :ok
       end
 
-      # POST /users/:user_id/accounts
+      # POST /accounts
       def create
         @account = Account.new(account_params)
-        @account.user_id = params[:user_id]
+        @account.user_id = user_id
 
         api = PlaidApi::SetAccessToken.new(params[:public_token])
         api.call!(@account)
@@ -24,9 +24,9 @@ module Api
         end
       end
 
-      # DELETE /users/:user_id/accounts/:id
+      # DELETE /accounts/:id
       def destroy
-        @account = Account.find_by(id: params[:id], user_id: params[:user_id])
+        @account = Account.find_by(id: params[:id], user_id:)
         if @account.delete
           render_success('Account deleted successfully')
         else

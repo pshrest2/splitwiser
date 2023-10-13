@@ -1,7 +1,7 @@
 module Api
   module V1
     class TransactionsController < ApplicationController
-      before_action :authorize, :validate_user, :validate_user_account
+      before_action :authorize, :validate_user_account
 
       # GET /users/:user_id/accounts/:account_id/transactions
       def index

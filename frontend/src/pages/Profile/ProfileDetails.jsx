@@ -1,22 +1,21 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Form, Image } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { updateUser } from "../../api/apiCalls";
+import { getUser, updateUser } from "../../api/apiCalls";
 import useAccessToken from "../../hooks/useAccessToken";
 
 const Profile = () => {
-  const { user: auth0_user } = useAuth0();
+  const { getAccessTokenSilently, getIdTokenClaims } = useAuth0();
   const [editUser, setEditUser] = useState(false);
-  const [user, setUser] = useState(auth0_user);
-
-  const accessToken = useAccessToken();
+  const [user, setUser] = useState(null);
 
   const handleFormSubmit = useCallback(
     async (e) => {
       e.preventDefault();
-      const result = await updateUser(user.sub, user, accessToken);
+      const accessToken = await getAccessTokenSilently();
+      const result = await updateUser(user, accessToken);
       if (result.error)
         toast.error("There was an error updating user. Please try again later");
       else {
@@ -24,7 +23,7 @@ const Profile = () => {
         setEditUser(false);
       }
     },
-    [accessToken, user]
+    [getAccessTokenSilently, user]
   );
 
   const handleFieldChange = (e) => {
@@ -34,6 +33,17 @@ const Profile = () => {
     }));
   };
 
+  const fetchUser = useCallback(async () => {
+    const accessToken = await getAccessTokenSilently();
+    const userInfo = await getUser(accessToken);
+    setUser(userInfo);
+  }, [getAccessTokenSilently]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+
+  if (!user) return;
   return (
     <div className="d-flex">
       <div className="mr-3">

@@ -9,7 +9,7 @@ import { createUserAccount, getUserAccounts } from "../../../api/apiCalls";
 import PlaidLink from "../../../components/PlaidLink";
 
 const Accounts = () => {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const [accounts, setAccounts] = useState([]);
   const gridApi = useRef();
 
@@ -17,7 +17,7 @@ const Accounts = () => {
     try {
       gridApi.current.api.showLoadingOverlay();
       const accessToken = await getAccessTokenSilently();
-      const result = await getUserAccounts(user.sub, accessToken);
+      const result = await getUserAccounts(accessToken);
       setAccounts(result);
     } catch (errorResponse) {
       setAccounts([]);
@@ -25,7 +25,7 @@ const Accounts = () => {
         "There was a problem getting retrieving the linked accounts. Try again later"
       );
     }
-  }, [getAccessTokenSilently, user.sub]);
+  }, [getAccessTokenSilently]);
 
   const onSuccess = useCallback(
     async (public_token, metadata) => {
@@ -34,14 +34,14 @@ const Accounts = () => {
         public_token: public_token,
       };
       const accessToken = await getAccessTokenSilently();
-      const result = await createUserAccount(user.sub, account, accessToken);
+      const result = await createUserAccount(account, accessToken);
 
       if (result.error)
         toast.error("Failed to add account. Please try again later");
       else toast.success("Account added successfully");
       await fetchAccounts();
     },
-    [fetchAccounts, getAccessTokenSilently, user.sub]
+    [fetchAccounts, getAccessTokenSilently]
   );
 
   return (

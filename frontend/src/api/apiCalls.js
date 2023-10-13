@@ -6,12 +6,12 @@ export function getLinkToken(token) {
 }
 
 // users
-export function getUser(id, token) {
-  return API.fetchJSON(`/api/v1/users/${id}`, token);
+export function getUser(token) {
+  return API.fetchJSON(`/api/v1/user`, token);
 }
 
-export function updateUser(id, body, token) {
-  return API.fetchJSON(`/api/v1/users/${id}`, token, body, { method: "PATCH" });
+export function updateUser(body, token) {
+  return API.fetchJSON(`/api/v1/users`, token, body, { method: "PATCH" });
 }
 
 export function createUser(body, token) {
@@ -19,21 +19,18 @@ export function createUser(body, token) {
 }
 
 // user accounts
-export function getUserAccounts(user_id, token) {
-  return API.fetchJSON(`/api/v1/users/${user_id}/accounts`, token);
+export function getUserAccounts(token) {
+  return API.fetchJSON(`/api/v1/accounts`, token);
 }
 
-export function createUserAccount(user_id, body, token) {
-  return API.fetchJSON(`/api/v1/users/${user_id}/accounts`, token, body);
+export function createUserAccount(body, token) {
+  return API.fetchJSON(`/api/v1/users/accounts`, token, body);
 }
 
-export function deleteUserAccount(user_id, account_id, token) {
-  return API.fetchJSON(
-    `/api/v1/users/${user_id}/accounts/${account_id}`,
-    token,
-    null,
-    { method: "DELETE" }
-  );
+export function deleteUserAccount(account_id, token) {
+  return API.fetchJSON(`/api/v1/accounts/${account_id}`, token, null, {
+    method: "DELETE",
+  });
 }
 
 // user account transactions

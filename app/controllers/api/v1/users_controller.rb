@@ -9,13 +9,13 @@ module Api
         @api ||= Auth0Api::User.new
       end
 
-      # GET /users/:sub
+      # GET /user
       def show
-        user = User.find_by(params[:sub])
+        user = User.find_by(sub: user_id)
         render json: user, status: :ok
       end
 
-      # PATCH /users/:id
+      # PATCH /users
       def update
         @api.update(params[:id], user_edit_params)
 

@@ -10,10 +10,12 @@ Rails.application.routes.draw do
       get   '/plaid/transactions', to: 'plaid#transactions'
       post  '/plaid/set_access_token', to: 'plaid#set_access_token'
 
-      resources :users do
-        resources :accounts do
-          resources :transactions
-        end
+      get '/user', to: 'users#show'
+      put '/users', to: 'users#update'
+      post '/users', to: 'users#create'
+
+      resources :accounts do
+        resources :transactions
       end
     end
   end
