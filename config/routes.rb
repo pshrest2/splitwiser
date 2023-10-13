@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       post  '/plaid/set_access_token', to: 'plaid#set_access_token'
 
       get '/user', to: 'users#show'
-      put '/users', to: 'users#update'
+      patch '/users', to: 'users#update'
       post '/users', to: 'users#create'
 
       resources :accounts do

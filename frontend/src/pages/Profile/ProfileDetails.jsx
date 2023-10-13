@@ -4,23 +4,22 @@ import { toast } from "react-toastify";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { getUser, updateUser } from "../../api/apiCalls";
-import useAccessToken from "../../hooks/useAccessToken";
 
 const Profile = () => {
-  const { getAccessTokenSilently, getIdTokenClaims } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const [editUser, setEditUser] = useState(false);
   const [user, setUser] = useState(null);
 
-  const handleFormSubmit = useCallback(
+  const handleUserUpdate = useCallback(
     async (e) => {
       e.preventDefault();
-      const accessToken = await getAccessTokenSilently();
-      const result = await updateUser(user, accessToken);
-      if (result.error)
-        toast.error("There was an error updating user. Please try again later");
-      else {
-        toast.success(result.message);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        await updateUser(user, accessToken);
+        toast.success("User updated successfully");
         setEditUser(false);
+      } catch (err) {
+        toast.error(err.error);
       }
     },
     [getAccessTokenSilently, user]
@@ -34,9 +33,13 @@ const Profile = () => {
   };
 
   const fetchUser = useCallback(async () => {
-    const accessToken = await getAccessTokenSilently();
-    const userInfo = await getUser(accessToken);
-    setUser(userInfo);
+    try {
+      const accessToken = await getAccessTokenSilently();
+      const userInfo = await getUser(accessToken);
+      setUser(userInfo);
+    } catch (e) {
+      toast.error(e.error);
+    }
   }, [getAccessTokenSilently]);
 
   useEffect(() => {
@@ -56,7 +59,7 @@ const Profile = () => {
             <h6>{user.email}</h6>
           </div>
         ) : (
-          <Form className="w-100 mx-5" onSubmit={handleFormSubmit}>
+          <Form className="w-100 mx-5" onSubmit={handleUserUpdate}>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
