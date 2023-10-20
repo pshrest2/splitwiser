@@ -9,7 +9,7 @@ const Callback = () => {
 
   const createNewUser = useCallback(async () => {
     const token = await getAccessTokenSilently();
-    const user = await getUser(auth0User.sub, token);
+    const user = await getUser(token);
 
     if (!user) {
       await createUser(auth0User, token);

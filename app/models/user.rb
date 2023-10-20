@@ -26,4 +26,5 @@ class User < ApplicationRecord
   has_many :paid_expenses, class_name: 'Expense', foreign_key: 'owner_id'
 
   validates :email, presence: true, uniqueness: true
+  validates :sub, presence: true, uniqueness: true
 end
