@@ -1,43 +1,52 @@
 module Api
   module V1
     class AccountsController < ApplicationController
-      before_action :authorize
+      before_action :authorize, :set_user
+      before_action :set_account, only: %i[show update destroy]
 
       # GET /accounts
       def index
-        @accounts = Account.where(user_id:).select(:id, :name, :status, :created_at)
+        @accounts = @user.accounts.select(:id, :name, :status, :created_at)
         render json: @accounts, status: :ok
+      end
+
+      # GET /accounts/:id
+      def show
+        render json: @account
       end
 
       # POST /accounts
       def create
-        @account = Account.new(account_params)
-        @account.user_id = user_id
+        @account = @user.accounts.build(account_params)
 
         api = PlaidApi::SetAccessToken.new(params[:public_token])
         api.call!(@account)
 
         if @account.save
-          render_success('Account created successfully')
+          render json: @account, status: :created
         else
-          render_error('Could not create account')
+          render json: @account.errors, status: :unprocessable_entity
         end
       end
 
       # DELETE /accounts/:id
       def destroy
-        @account = Account.find_by(id: params[:id], user_id:)
-        if @account.delete
-          render_success('Account deleted successfully')
-        else
-          render_error('Could not delete account')
-        end
+        @account.destroy
+        head :no_content
       end
 
       private
 
+      def set_user
+        @user = User.find_by(sub: user_id)
+      end
+
       def account_params
         params.require(:account).permit(:name)
+      end
+
+      def set_account
+        @account = @user.accounts.find(params[:id])
       end
     end
   end

@@ -32,7 +32,7 @@ const formatCurrency = (number, code) => {
 };
 
 const TransactionsModal = ({ show, onHide, account }) => {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const [transactions, setTransactions] = useState([]);
 
   const fetchTransactions = useCallback(
@@ -40,7 +40,7 @@ const TransactionsModal = ({ show, onHide, account }) => {
       try {
         api.showLoadingOverlay();
         const accessToken = await getAccessTokenSilently();
-        const result = await getTransactions(user.sub, account.id, accessToken);
+        const result = await getTransactions(account.id, accessToken);
 
         setTransactions(
           result.latest_transactions?.map((t) => ({
@@ -54,7 +54,7 @@ const TransactionsModal = ({ show, onHide, account }) => {
         setTransactions([]);
       }
     },
-    [account.id, getAccessTokenSilently, user.sub]
+    [account.id, getAccessTokenSilently]
   );
 
   const closeModal = () => {

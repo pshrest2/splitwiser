@@ -24,7 +24,7 @@ export function getUserAccounts(token) {
 }
 
 export function createUserAccount(body, token) {
-  return API.fetchJSON(`/api/v1/users/accounts`, token, body);
+  return API.fetchJSON(`/api/v1/accounts`, token, body);
 }
 
 export function deleteUserAccount(account_id, token) {
@@ -34,9 +34,6 @@ export function deleteUserAccount(account_id, token) {
 }
 
 // user account transactions
-export function getTransactions(user_id, account_id, token) {
-  return API.fetchJSON(
-    `/api/v1/users/${user_id}/accounts/${account_id}/transactions`,
-    token
-  );
+export function getTransactions(account_id, token) {
+  return API.fetchJSON(`/api/v1/accounts/${account_id}/transactions`, token);
 }
