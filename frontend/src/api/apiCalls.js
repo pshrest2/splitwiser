@@ -18,6 +18,21 @@ export function createUser(body, token) {
   return API.fetchJSON(`/api/v1/users`, token, body);
 }
 
+// user groups
+export function getUserGroups(token) {
+  return API.fetchJSON(`/api/v1/groups`, token);
+}
+
+export function createUserGroup(body, token) {
+  return API.fetchJSON(`/api/v1/groups`, token, body);
+}
+
+export function deleteUserGroup(group_id, token) {
+  return API.fetchJSON(`/api/v1/groups/${group_id}`, token, null, {
+    method: "DELETE",
+  });
+}
+
 // user accounts
 export function getUserAccounts(token) {
   return API.fetchJSON(`/api/v1/accounts`, token);

@@ -11,21 +11,21 @@ import { deleteUserAccount } from "../../../../api/apiCalls";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 const ActiveActions = ({ account }) => {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently } = useAuth0();
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [showTransactions, setShowTransactions] = useState(false);
 
   const deleteAccount = useCallback(async () => {
     try {
       const accessToken = await getAccessTokenSilently();
-      await deleteUserAccount(user.sub, account.id, accessToken);
+      await deleteUserAccount(account.id, accessToken);
       window.location.reload();
     } catch (errorResponse) {
       toast.error(errorResponse.error.message);
     } finally {
       setShowConfirmDelete(false);
     }
-  }, [account.id, getAccessTokenSilently, user.sub]);
+  }, [account.id, getAccessTokenSilently]);
 
   return (
     <>

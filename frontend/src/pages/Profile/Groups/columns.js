@@ -1,11 +1,17 @@
 import Actions from "./Actions";
-import Status from "./Status";
 import CreatedAt from "../../../components/CreatedAt";
 
 const columnDefs = [
   {
-    headerName: "Institution Name",
+    headerName: "Group Name",
     field: "name",
+    sortable: true,
+    resizable: true,
+    suppressMovable: true,
+  },
+  {
+    headerName: "Description",
+    field: "description",
     sortable: true,
     resizable: true,
     suppressMovable: true,
@@ -17,22 +23,6 @@ const columnDefs = [
     valueGetter: (params) => ({
       createdAt: params.data.created_at,
     }),
-    sortable: true,
-    resizable: true,
-    suppressMovable: true,
-  },
-  {
-    headerName: "Status",
-    cellRenderer: Status,
-    valueGetter: (params) => ({
-      status: params.data.status,
-    }),
-    comparator: (valueA, valueB) => {
-      const a = valueA.status.toLowerCase();
-      const b = valueB.status.toLowerCase();
-
-      return a.localeCompare(b);
-    },
     sortable: true,
     resizable: true,
     suppressMovable: true,
