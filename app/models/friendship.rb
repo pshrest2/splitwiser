@@ -3,6 +3,7 @@
 # Table name: friendships
 #
 #  id         :bigint           not null, primary key
+#  status     :string           default("pending"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  friend_id  :bigint           not null
@@ -24,8 +25,16 @@ class Friendship < ApplicationRecord
   belongs_to :friend, class_name: 'User'
 
   validates :friend_id, uniqueness: { scope: :user_id }
-
+  validates :status, inclusion: { in: ['pending', 'accepted', 'declined'] }
   validate :cannot_befriend_self
+
+  after_initialize :set_pending
+
+  private
+
+  def set_pending
+    self.status ||= 'pending'
+  end
 
   def cannot_befriend_self
     errors.add(:friend, "You can't befriend yourself") if user == friend

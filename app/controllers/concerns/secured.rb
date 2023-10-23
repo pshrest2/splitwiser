@@ -29,8 +29,6 @@ module Secured
 
     return unless (error = validation_response.error)
 
-    render json: INSUFFICIENT_PERMISSIONS, status: :forbidden and return unless params[:id] == @decoded_token[:sub]
-
     render json: { error: error.message }, status: error.status
   end
 
