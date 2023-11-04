@@ -10,6 +10,10 @@ export function getUser(token) {
   return API.fetchJSON(`/api/v1/user`, token);
 }
 
+export function getUserById(id, token) {
+  return API.fetchJSON(`/api/v1/users/${id}`, token);
+}
+
 export function getUsers(token) {
   return API.fetchJSON(`/api/v1/users`, token);
 }

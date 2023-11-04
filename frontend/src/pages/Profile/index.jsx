@@ -7,7 +7,7 @@ const Profile = () => {
   return (
     <div>
       <ProfileDetails />
-      <Friends />
+      {/* <Friends /> */}
       <Groups />
       <Accounts />
     </div>
