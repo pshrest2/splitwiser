@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import "./styles/theme.scss";
 import BackgroundContainer from "./components/BackgroundContainer";
 import Callback from "./pages/Callback";
+import UserDetail from "./pages/UserDetail";
 
 function App() {
   const { isLoading } = useAuth0();
@@ -34,6 +35,14 @@ function App() {
             }
           />
           <Route
+            path="/users/:userId"
+            element={
+              <RequireAuth>
+                <UserDetail />
+              </RequireAuth>
+            }
+          />
+          <Route
             path="/callback"
             element={
               <RequireAuth>
@@ -41,6 +50,7 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <ToastContainer />

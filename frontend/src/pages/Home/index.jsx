@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import UploadReceiptModal from "../../components/modals/UploadReceiptModal";
+import SearchBar from "../../components/SearchBar";
 
 const Home = () => {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
@@ -24,12 +25,17 @@ const Home = () => {
           Get Started
         </Button>
       ) : (
-        <Button
-          className="my-5 mx-auto"
-          onClick={() => setShowUploadReceipt(true)}
-        >
-          Upload Receipt
-        </Button>
+        <div className="d-flex flex-column">
+          <div className="d-flex justify-content-center">
+            <SearchBar />
+          </div>
+          {/* <Button
+            className="my-5 mx-auto"
+            onClick={() => setShowUploadReceipt(true)}
+          >
+            Upload Receipt
+          </Button> */}
+        </div>
       )}
       {showUploadReceipt && (
         <UploadReceiptModal

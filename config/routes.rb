@@ -10,7 +10,8 @@ Rails.application.routes.draw do
       get   '/plaid/transactions', to: 'plaid#transactions'
       post  '/plaid/set_access_token', to: 'plaid#set_access_token'
 
-      get   '/user',  to: 'users#show'
+      get   '/user', to: 'users#show_by_sub'
+      get   '/users/:id', to: 'users#show'
       get   '/users', to: 'users#index'
       patch '/users', to: 'users#update'
       post  '/users', to: 'users#create'

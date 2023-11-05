@@ -10,12 +10,29 @@ export function getUser(token) {
   return API.fetchJSON(`/api/v1/user`, token);
 }
 
+export function getUserById(id, token) {
+  return API.fetchJSON(`/api/v1/users/${id}`, token);
+}
+
+export function getUsers(token) {
+  return API.fetchJSON(`/api/v1/users`, token);
+}
+
 export function updateUser(body, token) {
   return API.fetchJSON(`/api/v1/users`, token, body, { method: "PATCH" });
 }
 
 export function createUser(body, token) {
   return API.fetchJSON(`/api/v1/users`, token, body);
+}
+
+// user friends
+export function getFriends(token) {
+  return API.fetchJSON(`/api/v1/friends`, token);
+}
+
+export function addFriends(body, token) {
+  return API.fetchJSON(`/api/v1/friends`, token, body);
 }
 
 // user groups
