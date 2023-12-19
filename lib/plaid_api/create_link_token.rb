@@ -2,6 +2,7 @@ module PlaidApi
   class CreateLinkToken < PlaidApiBase
     def call
       # Create a link_token for the given user
+      # TODO: accept user_id to create unique link token per user
       request = Plaid::LinkTokenCreateRequest.new(
         {
           user: { client_user_id: '1' },
